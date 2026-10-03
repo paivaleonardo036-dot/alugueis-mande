@@ -15,163 +15,228 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
 <style>
-/* Layout: one column, phone-first. Summary on top, then big tappable rent cards grouped by priority / day / building. */
+/* Layout: uma coluna, letra grande. Resumo do mês no topo, alerta de atraso, três botões grandes de menu, lista abaixo. Selma flutua no canto. */
 :root{
-  --bg:#f3f5f8; --card:#ffffff; --fg:#16233a; --muted:#5d6b82; --line:#dfe4ec;
-  --navy:#1f4e79; --navy-ink:#ffffff;
-  --late:#e2553f; --late-bg:#fde9e4;
-  --today:#e39b0b; --today-bg:#fff3d6;
-  --soon:#2f7fd1; --soon-bg:#e2efff;
-  --later:#6b7891; --later-bg:#eceff4;
-  --paid:#1f9a5b; --paid-bg:#dcf5e6;
-  --shadow:0 1px 2px rgba(22,35,58,.06),0 4px 14px rgba(22,35,58,.06);
+  --bg:#f2f4f7; --card:#ffffff; --fg:#14213a; --muted:#56637a; --line:#d9dfe8;
+  --navy:#1f4e79; --navy-ink:#ffffff; --navy-soft:#e3ecf6;
+  --late:#d8432c; --late-bg:#fde7e2;
+  --hot:#e8730c; --hot-bg:#ffeedd;
+  --warm:#c79100; --warm-bg:#fff5d1;
+  --cold:#2f7fd1; --cold-bg:#e2efff;
+  --paid:#1c8f55; --paid-bg:#dcf4e6;
+  --gray:#6b7891; --gray-bg:#eceff4;
+  --selma:#7a3fb0; --selma-bg:#f1e8fa;
+  --shadow:0 1px 2px rgba(20,33,58,.06),0 4px 14px rgba(20,33,58,.07);
   --display:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif;
   --body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0f1622; --card:#18212f; --fg:#e8edf5; --muted:#9aa7bb; --line:#2a3546;
-  --navy:#3b78b5; --navy-ink:#ffffff;
-  --late:#ff7a63; --late-bg:#3a1f1b; --today:#ffbf3d; --today-bg:#3a2e12;
-  --soon:#6aaeff; --soon-bg:#16294a; --later:#9aa7bb; --later-bg:#222c3b;
-  --paid:#4ccf88; --paid-bg:#123324; --shadow:none; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0f1622; --card:#18212f; --fg:#e8edf5; --muted:#9aa7bb; --line:#2a3546;
-  --navy:#3b78b5; --navy-ink:#ffffff;
-  --late:#ff7a63; --late-bg:#3a1f1b; --today:#ffbf3d; --today-bg:#3a2e12;
-  --soon:#6aaeff; --soon-bg:#16294a; --later:#9aa7bb; --later-bg:#222c3b;
-  --paid:#4ccf88; --paid-bg:#123324; --shadow:none; color-scheme:dark}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1622; --card:#18212f; --fg:#eaeef5; --muted:#a3afc2; --line:#2b3648;
+  --navy:#3b78b5; --navy-soft:#1b2b44;
+  --late:#ff7a63; --late-bg:#3a1f1b; --hot:#ff9d4a; --hot-bg:#3a2714;
+  --warm:#f2c23d; --warm-bg:#352c12; --cold:#6aaeff; --cold-bg:#16294a;
+  --paid:#4ccf88; --paid-bg:#123324; --gray:#a3afc2; --gray-bg:#222c3b;
+  --selma:#c08cf0; --selma-bg:#2d2140; --shadow:none; color-scheme:dark}}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.4}
-.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:14px 110px;display:flex;flex-direction:column;gap:16px}
-button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--soon);outline-offset:2px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:18px;line-height:1.4;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:14px 120px;display:flex;flex-direction:column;gap:16px}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--cold);outline-offset:2px}
 .num{font-variant-numeric:tabular-nums}
+svg{flex:none}
 
-/* header */
+/* topo */
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.top h1{font-family:var(--display);font-weight:800;font-size:1.7rem;margin:0;letter-spacing:-.02em}
-.month{display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
-.month button{border:0;background:transparent;width:36px;height:36px;border-radius:50%;font-size:1.2rem;font-weight:800}
+.top h1{font-family:var(--display);font-weight:800;font-size:1.75rem;margin:0;letter-spacing:-.02em}
+.month{display:flex;align-items:center;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.month button{border:0;background:transparent;width:42px;height:42px;border-radius:50%;font-size:1.4rem;font-weight:800;line-height:1}
 .month button:active{background:var(--line)}
-.month span{font-weight:800;min-width:96px;text-align:center;font-size:.95rem}
+.month span{font-weight:800;min-width:92px;text-align:center}
 
-/* summary */
+/* resumo */
 .sum{background:var(--navy);color:var(--navy-ink);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px}
-.sum .lbl{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;opacity:.85;font-weight:700}
-.sum .big{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1.05;margin-top:2px}
-.sum .of{opacity:.85;font-weight:700;margin-top:4px}
+.sum .lbl{font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;opacity:.9;font-weight:800}
+.sum .big{font-family:var(--display);font-weight:800;font-size:2.2rem;line-height:1.05;margin-top:2px}
+.sum .of{opacity:.9;font-weight:700;margin-top:4px;font-size:1rem}
 .bar{display:flex;height:12px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
 .bar i{display:block;height:100%;transition:width .4s}
-.bar .b-paid{background:#7ef0b0}.bar .b-open{background:#8cc2ff}.bar .b-late{background:#ff8a73}
+.b-paid{background:#7ef0b0}.b-open{background:#8cc2ff}.b-late{background:#ff8a73}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .tile{border:0;border-radius:16px;padding:11px 10px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0;outline:3px solid transparent;outline-offset:-3px}
-.tile small{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
-.tile small b{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none}
-.tile strong{font-family:var(--display);font-weight:800;font-size:1.08rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tile span{font-size:.78rem;font-weight:700;opacity:.85}
+.tile small{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.tile strong{font-family:var(--display);font-weight:800;font-size:1.02rem;line-height:1.15}
+.tile span{font-size:.82rem;font-weight:700;opacity:.9}
 .tile.paid{background:var(--paid-bg);color:var(--paid)}
-.tile.open{background:var(--soon-bg);color:var(--soon)}
+.tile.open{background:var(--cold-bg);color:var(--cold)}
 .tile.late{background:var(--late-bg);color:var(--late)}
 .tile[aria-pressed="true"]{outline-color:var(--navy-ink)}
-.hint{font-size:.78rem;opacity:.8;font-weight:600;text-align:center;margin-top:-6px}
-@media (max-width:360px){.tile strong{font-size:.95rem}}
+@media (max-width:370px){.tile strong{font-size:.95rem}.tile small{font-size:.7rem}}
 
-/* tabs and chips */
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px;gap:4px}
-.tabs button{border:0;background:transparent;padding:11px 4px;border-radius:12px;font-weight:800;font-size:.86rem;color:var(--muted)}
-.tabs button[aria-pressed="true"]{background:var(--navy);color:var(--navy-ink)}
-.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
-.chips button{flex:none;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:7px 14px;font-weight:700;font-size:.88rem}
-.chips button[aria-pressed="true"]{border-color:var(--navy);color:var(--navy);background:var(--soon-bg)}
+/* alerta */
+.alert{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--late);background:var(--late-bg);color:var(--fg);border-radius:18px;padding:14px}
+.alert .ic{width:44px;height:44px;border-radius:50%;background:var(--late);color:#fff;display:flex;align-items:center;justify-content:center}
+.alert b{display:block;color:var(--late);font-size:1.05rem}
+.alert span{display:block;font-weight:700;font-size:.92rem;color:var(--muted)}
+.alert .go{margin-left:auto;font-weight:800;color:var(--late);white-space:nowrap}
 
-/* groups */
+/* menu principal */
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.menu button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:.92rem;line-height:1.15;text-align:center;min-height:92px;justify-content:center}
+.menu button svg{color:var(--navy)}
+.menu button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:var(--navy-ink)}
+.menu button[aria-pressed="true"] svg{color:var(--navy-ink)}
+
+/* barra de ordenação */
+.bar2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar2 label{font-weight:800;color:var(--muted);font-size:.95rem}
+.bar2 select{flex:1;min-width:180px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:11px 12px;font-weight:700}
+.search{width:100%;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:600}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg.three{grid-template-columns:repeat(3,1fr)}
+.seg button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.seg button small{font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.seg button strong{font-family:var(--display);font-weight:800;font-size:1.7rem;line-height:1}
+.seg button span{font-weight:700;font-size:.85rem;color:var(--muted)}
+.seg .ok strong{color:var(--paid)}.seg .ok[aria-pressed="true"]{border-color:var(--paid);background:var(--paid-bg)}
+.seg .bad strong{color:var(--late)}.seg .bad[aria-pressed="true"]{border-color:var(--late);background:var(--late-bg)}
+.seg .neu strong{color:var(--navy)}.seg .neu[aria-pressed="true"]{border-color:var(--navy);background:var(--navy-soft)}
+.seg .vac strong{color:var(--warm)}.seg .vac[aria-pressed="true"]{border-color:var(--warm);background:var(--warm-bg)}
+
+/* grupos e cartões */
+.list{display:flex;flex-direction:column;gap:22px}
 .group{display:flex;flex-direction:column;gap:10px}
 .ghead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-inline:2px}
-.ghead h2{margin:0;font-family:var(--display);font-weight:800;font-size:1.12rem;display:flex;align-items:center;gap:8px}
-.ghead h2 .dot{width:12px;height:12px;border-radius:50%}
-.ghead .tot{color:var(--muted);font-weight:700;font-size:.9rem}
-
-/* rent card */
-.rent{display:grid;grid-template-columns:62px 1fr auto;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:var(--card);border-radius:18px;padding:12px;box-shadow:var(--shadow);border:1px solid var(--line)}
-.rent:active{transform:scale(.99)}
-.day{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;height:58px;font-weight:800;line-height:1}
-.day small{font-size:.62rem;letter-spacing:.08em;margin-bottom:3px}
-.day span{font-family:var(--display);font-size:1.6rem}
+.ghead h2{margin:0;font-family:var(--display);font-weight:800;font-size:1.2rem;display:flex;align-items:center;gap:8px}
+.ghead h2 .dot{width:14px;height:14px;border-radius:50%}
+.ghead .tot{color:var(--muted);font-weight:700;font-size:.92rem;white-space:nowrap}
+.card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border-radius:18px;padding:12px;box-shadow:var(--shadow);border:1px solid var(--line);border-left:7px solid var(--line)}
+.card:active{transform:scale(.99)}
 .who{min-width:0}
-.who strong{display:block;font-size:1.02rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.who em{display:block;font-style:normal;color:var(--muted);font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who strong{display:block;font-size:1.08rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who em{display:block;font-style:normal;color:var(--muted);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .amt{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}
-.amt strong{font-weight:800;font-size:1rem}
-.tag{font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:99px;white-space:nowrap}
-.s-late .day,.s-late .tag{background:var(--late-bg);color:var(--late)}
-.s-open .day,.s-open .tag{background:var(--soon-bg);color:var(--soon)}
-.s-later .day,.s-later .tag{background:var(--later-bg);color:var(--later)}
-.s-paid .day,.s-paid .tag{background:var(--paid-bg);color:var(--paid)}
-.rent.s-late{border-left:6px solid var(--late)}
-.rent.s-open{border-left:6px solid var(--soon)}
-.rent.s-paid{border-left:6px solid var(--paid)}
-.s-paid .who strong{opacity:.75}
-.s-na .day,.s-na .tag{background:var(--later-bg);color:var(--later)}
-.s-na{opacity:.75}
-.s-gone{opacity:.6}
+.amt strong{font-weight:800}
+.tag{font-size:.78rem;font-weight:800;padding:4px 9px;border-radius:99px;white-space:nowrap}
+.day{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:14px;width:58px;height:58px;font-weight:800;line-height:1}
+.day small{font-size:.62rem;letter-spacing:.08em;margin-bottom:3px}
+.day span{font-family:var(--display);font-size:1.55rem}
+.day.unit span{font-size:1rem;text-align:center;padding-inline:2px}
+/* temperaturas */
+.t-late{border-left-color:var(--late)} .t-late .day,.t-late .tag{background:var(--late-bg);color:var(--late)}
+.t-hot{border-left-color:var(--hot)} .t-hot .day,.t-hot .tag{background:var(--hot-bg);color:var(--hot)}
+.t-warm{border-left-color:var(--warm)} .t-warm .day,.t-warm .tag{background:var(--warm-bg);color:var(--warm)}
+.t-cold{border-left-color:var(--cold)} .t-cold .day,.t-cold .tag{background:var(--cold-bg);color:var(--cold)}
+.t-paid{border-left-color:var(--paid)} .t-paid .day,.t-paid .tag{background:var(--paid-bg);color:var(--paid)}
+.t-na,.t-vac{border-left-color:var(--gray)} .t-na .day,.t-na .tag{background:var(--gray-bg);color:var(--gray)}
+.t-vac .day,.t-vac .tag{background:var(--warm-bg);color:var(--warm)}
+.thermo{display:flex;gap:3px;margin-top:6px}
+.thermo i{width:16px;height:6px;border-radius:3px;background:var(--line)}
+.t-cold .thermo i.on{background:var(--cold)}.t-warm .thermo i.on{background:var(--warm)}.t-hot .thermo i.on{background:var(--hot)}.t-late .thermo i.on{background:var(--late)}.t-paid .thermo i.on{background:var(--paid)}
+.debt{display:block;color:var(--late);font-weight:800;font-size:.88rem;margin-top:2px}
 
-.unav{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.unav button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:2px}
-.unav button small{font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.unav button strong{font-family:var(--display);font-weight:800;font-size:1.9rem;line-height:1}
-.unav button span{font-weight:700;font-size:.82rem;color:var(--muted)}
-.unav .on[aria-pressed="true"]{border-color:var(--soon);background:var(--soon-bg)}
-.unav .on strong{color:var(--soon)}
-.unav .off[aria-pressed="true"]{border-color:var(--today);background:var(--today-bg)}
-.unav .off strong{color:var(--today)}
-.u-on .day,.u-on .tag{background:var(--soon-bg);color:var(--soon)}
-.u-off .day,.u-off .tag{background:var(--today-bg);color:var(--today)}
-.rent.u-off{border-left:6px solid var(--today)}
-.rent.u-on{border-left:6px solid var(--soon)}
-.day.unit span{font-size:1.05rem;text-align:center;padding-inline:2px}
-.empty{background:var(--card);border:1.5px dashed var(--line);border-radius:18px;padding:22px;text-align:center;color:var(--muted);font-weight:600}
-.more{border:0;background:transparent;color:var(--muted);font-weight:800;padding:8px;align-self:center}
+/* endereços */
+.addr{display:flex;flex-direction:column;gap:8px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.addr h3{margin:0;font-family:var(--display);font-weight:800;font-size:1.3rem;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.addr h3 span{color:var(--muted);font-family:var(--body);font-size:1.4rem}
+.addr .facts{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:.85rem;font-weight:800;padding:5px 10px;border-radius:99px;background:var(--gray-bg);color:var(--muted)}
+.chip.ok{background:var(--paid-bg);color:var(--paid)}.chip.bad{background:var(--late-bg);color:var(--late)}.chip.vac{background:var(--warm-bg);color:var(--warm)}
+.mini{height:8px;border-radius:99px;background:var(--gray-bg);overflow:hidden;display:flex}
+.mini i{height:100%}
+.back{align-self:flex-start;border:0;background:var(--navy-soft);color:var(--navy);font-weight:800;padding:10px 16px;border-radius:99px}
+.pagetitle{margin:0;font-family:var(--display);font-weight:800;font-size:1.5rem}
+.row2{display:flex;gap:10px;flex-wrap:wrap}
+.row2 .btn{flex:1;min-width:150px}
 
-/* fab */
-.fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));border:0;background:var(--navy);color:var(--navy-ink);font-weight:800;padding:15px 20px;border-radius:99px;box-shadow:0 6px 20px rgba(31,78,121,.35);font-size:1rem}
+/* índice */
+.idx{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.idx p{margin:0;color:var(--muted);font-weight:600;font-size:.95rem}
+.idxrow{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;padding-block:10px;border-top:1px solid var(--line)}
+.idxrow:first-of-type{border-top:0}
+.idxrow b{font-weight:800}
+.idxrow em{font-style:normal;color:var(--muted);font-size:.88rem;grid-column:1/-1}
+.grade{font-weight:800;font-size:.8rem;padding:4px 10px;border-radius:99px}
+.g-alta{background:var(--paid-bg);color:var(--paid)}.g-media{background:var(--warm-bg);color:var(--warm)}.g-baixa{background:var(--late-bg);color:var(--late)}
+.meter{grid-column:1/-1;height:8px;border-radius:99px;background:var(--gray-bg);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px}
 
-/* sheet */
-.scrim{position:fixed;inset:0;background:rgba(10,18,30,.45);display:flex;align-items:flex-end;justify-content:center;z-index:10}
-.sheet{background:var(--card);width:100%;max-width:640px;border-radius:24px 24px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;max-height:92%;overflow-y:auto}
-.sheet h3{margin:0;font-family:var(--display);font-weight:800;font-size:1.4rem}
-.sheet .sub{color:var(--muted);font-weight:600;margin-top:-8px}
+.empty{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:22px;text-align:center;color:var(--muted);font-weight:700}
+.foot{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px}
+.link{border:0;background:transparent;color:var(--muted);font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:8px}
+
+/* folha (bottom sheet) */
+.scrim{position:fixed;inset:0;background:rgba(10,18,30,.5);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{background:var(--card);width:100%;max-width:640px;border-radius:24px 24px 0 0;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;max-height:92%;overflow-y:auto}
+.sheet h3{margin:0;font-family:var(--display);font-weight:800;font-size:1.55rem}
+.sheet .sub{color:var(--muted);font-weight:700;margin-top:-8px}
 .kv{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .kv div{background:var(--bg);border-radius:12px;padding:10px}
-.kv small{display:block;color:var(--muted);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
-.kv b{font-size:1.02rem}
-.btn{border:0;border-radius:16px;padding:16px;font-weight:800;font-size:1.05rem;width:100%}
+.kv small{display:block;color:var(--muted);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.kv b{font-size:1.05rem}
+.btn{border:0;border-radius:16px;padding:16px;font-weight:800;font-size:1.08rem;width:100%;text-align:center}
 .btn.pay{background:var(--paid);color:#fff}
+.btn.main{background:var(--navy);color:var(--navy-ink)}
 .btn.ghost{background:var(--bg);color:var(--fg)}
 .btn.danger{background:var(--late-bg);color:var(--late)}
-.row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.row button{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:11px 4px;font-weight:800}
-.row button[aria-pressed="true"]{border-color:var(--paid);background:var(--paid-bg);color:var(--paid)}
+.btn:disabled{opacity:.6}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opts button{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:12px 4px;font-weight:800}
+.opts button[aria-pressed="true"]{border-color:var(--paid);background:var(--paid-bg);color:var(--paid)}
+.box{border:2px solid var(--late);background:var(--late-bg);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.box h4{margin:0;color:var(--late);font-size:1.05rem}
+.box .ln{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border-radius:12px;padding:8px 10px;font-weight:700}
+.box .ln button{border:0;background:var(--paid);color:#fff;font-weight:800;border-radius:10px;padding:9px 12px}
+.hist h4{margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.hist h4 span{display:flex;gap:4px}
+.hist h4 button{border:1px solid var(--line);background:var(--card);border-radius:10px;width:38px;height:34px;font-weight:800}
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.months button{border:0;border-radius:10px;padding:8px 2px;font-weight:800;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:2px}
+.months button i{font-style:normal;font-size:.68rem;font-weight:700}
+.m-paid{background:var(--paid-bg);color:var(--paid)}.m-late{background:var(--late-bg);color:var(--late)}
+.m-open{background:var(--cold-bg);color:var(--cold)}.m-na{background:var(--gray-bg);color:var(--gray)}.m-none{background:var(--bg);color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.8rem;font-weight:700;color:var(--muted);margin-top:8px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
 form{display:flex;flex-direction:column;gap:12px}
-label{display:flex;flex-direction:column;gap:5px;font-weight:800;font-size:.85rem;color:var(--muted)}
-input,select{font:inherit;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:1rem;width:100%}
+label.f{display:flex;flex-direction:column;gap:5px;font-weight:800;font-size:.9rem;color:var(--muted)}
+label.f input,label.f select{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px;font-size:1.05rem;width:100%;color:var(--fg)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.note{color:var(--muted);font-size:.85rem;font-weight:600;text-align:center}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:99px;font-weight:800;z-index:20;font-size:.92rem}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.note{color:var(--muted);font-size:.92rem;font-weight:600;text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:99px;font-weight:800;z-index:40;max-width:90vw;text-align:center}
 
-/* página fora do Claude */
-html{color-scheme:light}
-body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);-webkit-text-size-adjust:100%}
-[hidden]{display:none!important}
-.login{position:fixed;inset:0;background:var(--bg);z-index:30;display:flex;align-items:center;justify-content:center;padding:24px 16px}
-.login form{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;width:100%;max-width:380px;box-shadow:var(--shadow)}
-.login h1{margin:0;font-family:var(--display);font-weight:800;font-size:1.8rem}
+/* Selma */
+.selmaBtn{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:15;border:0;background:var(--selma);color:#fff;font-weight:800;font-size:1.05rem;padding:14px 20px 14px 14px;border-radius:99px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(122,63,176,.4)}
+.selmaBtn .av{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--selma);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800}
+.chat{position:fixed;inset:auto 0 0 0;z-index:30;display:flex;justify-content:center;pointer-events:none}
+.chatbox{pointer-events:auto;width:100%;max-width:640px;height:min(78vh,640px);background:var(--card);border-radius:24px 24px 0 0;box-shadow:0 -8px 30px rgba(10,18,30,.25);display:flex;flex-direction:column;border:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.chathead{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.chathead .av{width:40px;height:40px;border-radius:50%;background:var(--selma);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:1.2rem}
+.chathead b{font-family:var(--display);font-size:1.25rem}
+.chathead small{display:block;color:var(--muted);font-weight:700;font-size:.82rem}
+.chathead button{margin-left:auto;border:0;background:var(--bg);border-radius:99px;padding:10px 14px;font-weight:800}
+.msgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:11px 14px;border-radius:18px;font-weight:600;white-space:pre-wrap;word-wrap:break-word}
+.msg.s{background:var(--selma-bg);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.u{background:var(--navy);color:var(--navy-ink);align-self:flex-end;border-bottom-right-radius:6px}
+.msg.sys{align-self:center;background:transparent;color:var(--muted);font-size:.85rem;padding:2px}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.quick button{flex:none;border:2px solid var(--selma);background:var(--card);color:var(--selma);font-weight:800;border-radius:99px;padding:8px 14px;font-size:.9rem}
+.compose{display:flex;flex-direction:row;gap:8px;padding:10px 16px 14px;border-top:1px solid var(--line)}
+.compose input{flex:1;min-width:0;background:var(--bg);border:2px solid var(--line);border-radius:99px;padding:12px 16px}
+.compose button{border:0;background:var(--selma);color:#fff;font-weight:800;border-radius:99px;padding:0 18px}
+
+/* login */
+.login{position:fixed;inset:0;background:var(--bg);z-index:50;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.login form{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;width:100%;max-width:400px;box-shadow:var(--shadow)}
+.login h1{margin:0;font-family:var(--display);font-weight:800;font-size:2rem}
 .login p{margin:0;color:var(--muted);font-weight:600}
-.login .err{color:var(--late);font-weight:700}
-.tools{display:flex;flex-direction:column;gap:8px;margin-top:20px;padding-top:16px;border-top:1px dashed var(--line)}
-.tools h2{margin:0 0 4px;font-family:var(--display);font-size:1rem;color:var(--muted)}
+.err{color:var(--late);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-
 </head>
 <body>
 <div class="wrap">
@@ -190,56 +255,71 @@ body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-a
       <div class="big num" id="sTot">R$ 0,00</div>
       <div class="of num" id="sOf">Já pago: R$ 0,00</div>
     </div>
-    <div class="bar"><i class="b-paid" id="bPaid" style="width:0%"></i><i class="b-open" id="bOpen" style="width:0%"></i><i class="b-late" id="bLate" style="width:0%"></i></div>
+    <div class="bar"><i class="b-paid" id="bPaid"></i><i class="b-open" id="bOpen"></i><i class="b-late" id="bLate"></i></div>
     <div class="tiles">
-      <button class="tile paid" data-st="paid" aria-pressed="false"><small><b></b>Pago</small><strong class="num" id="vPaid">R$ 0</strong><span class="num" id="nPaid">0 inquilinos</span></button>
-      <button class="tile open" data-st="open" aria-pressed="false"><small><b></b>A pagar</small><strong class="num" id="vOpen">R$ 0</strong><span class="num" id="nOpen">0 inquilinos</span></button>
-      <button class="tile late" data-st="late" aria-pressed="false"><small><b></b>Atrasado</small><strong class="num" id="vLate">R$ 0</strong><span class="num" id="nLate">0 inquilinos</span></button>
+      <button class="tile paid" data-st="paid" aria-pressed="false"><small>Pago</small><strong class="num" id="vPaid">R$ 0</strong><span class="num" id="nPaid">0 inquilinos</span></button>
+      <button class="tile open" data-st="open" aria-pressed="false"><small>A pagar</small><strong class="num" id="vOpen">R$ 0</strong><span class="num" id="nOpen">0 inquilinos</span></button>
+      <button class="tile late" data-st="late" aria-pressed="false"><small>Atrasado</small><strong class="num" id="vLate">R$ 0</strong><span class="num" id="nLate">0 inquilinos</span></button>
     </div>
-    <div class="hint" id="sHint">Toque num quadro para ver só esses inquilinos</div>
   </section>
 
-  <nav class="tabs" aria-label="Organizar por">
-    <button id="t-prio" aria-pressed="true">Prioridade</button>
-    <button id="t-dia" aria-pressed="false">Por dia</button>
-    <button id="t-predio" aria-pressed="false">Por prédio</button>
-    <button id="t-unid" aria-pressed="false">Unidades</button>
+  <button class="alert" id="alert" hidden>
+    <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 8v5M12 17h.01"/><path d="M10.3 3.9 2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span>
+    <span><b id="alT">—</b><span id="alS">—</span></span>
+    <span class="go">Ver ›</span>
+  </button>
+
+  <nav class="menu" aria-label="Menu">
+    <button data-view="prazo" aria-pressed="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 14.76V4a2 2 0 0 0-4 0v10.76a4 4 0 1 0 4 0z"/><path d="M12 9v7"/></svg>
+      Inquilinos /<br>Prazo</button>
+    <button data-view="inq" aria-pressed="false">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.5 3.5 5.2"/></svg>
+      Inquilinos</button>
+    <button data-view="end" aria-pressed="false">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6M9 11h.01M15 11h.01"/></svg>
+      Endereços</button>
   </nav>
 
-  <div class="chips" id="chips"></div>
+  <div class="bar2" id="sortBar">
+    <label for="sortSel">Ordenar por</label>
+    <select id="sortSel">
+      <option value="dia">Data de pagamento</option>
+      <option value="nome">Nome do inquilino</option>
+      <option value="end">Endereço</option>
+      <option value="valor">Valor do aluguel</option>
+      <option value="atraso">Mais atrasado primeiro</option>
+    </select>
+  </div>
 
-  <main id="list" class="group" style="gap:22px">
-    <div class="empty">Carregando seus aluguéis…</div>
-  </main>
+  <main id="list" class="list"><div class="empty">Carregando…</div></main>
 
-  <section class="tools" id="tools" hidden>
-    <h2>Dados e conta</h2>
-    <button class="btn ghost" id="expBtn" type="button">Baixar backup dos dados</button>
-    <label class="btn ghost" for="impFile" style="text-align:center;color:var(--fg);font-size:1.05rem;cursor:pointer">Importar backup</label>
-    <input type="file" id="impFile" accept=".json,application/json" hidden>
-    <button class="btn ghost" id="outBtn" type="button">Sair da conta</button>
-  </section>
+  <div class="foot">
+    <button class="link" id="idxLink">Índice Imóveis</button>
+    <button class="link" id="acctLink">Dados e conta</button>
+  </div>
 </div>
 
-<button class="fab" id="addBtn">+ Inquilino</button>
+<button class="selmaBtn" id="selmaBtn" hidden><span class="av">S</span>Selma</button>
+<div id="chatHost"></div>
 <div id="sheetHost"></div>
+<div id="toastHost"></div>
+
 <div class="login" id="login" hidden>
   <form id="loginForm">
     <h1>Aluguéis</h1>
     <p>Entre com seu e-mail e senha.</p>
-    <label>E-mail<input id="lEmail" type="email" autocomplete="username" required></label>
-    <label>Senha<input id="lPass" type="password" autocomplete="current-password" required></label>
+    <label class="f">E-mail<input id="lEmail" type="email" autocomplete="username" required></label>
+    <label class="f">Senha<input id="lPass" type="password" autocomplete="current-password" required></label>
     <div class="err" id="lErr" hidden></div>
-    <button class="btn pay" type="submit" id="lBtn">Entrar</button>
+    <button class="btn main" type="submit" id="lBtn">Entrar</button>
   </form>
 </div>
-<div id="toastHost"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-/* ====== COLE AQUI A CONFIGURAÇÃO DO SEU PROJETO FIREBASE ====== */
 const firebaseConfig = {
   apiKey: "AIzaSyAB6p89rsBE2wDQP4_0ctARUR7inByixB0",
   authDomain: "alugueis-do-xande.firebaseapp.com",
@@ -248,327 +328,648 @@ const firebaseConfig = {
   messagingSenderId: "1042546222813",
   appId: "1:1042546222813:web:b888c90bbb5813c149dd34"
 };
-/* ============================================================== */
 </script>
 <script>
 (function(){
+/* ---------- utilidades ---------- */
 const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MES3=MESES.map(m=>m.slice(0,3));
 const SEM=["dom","seg","ter","qua","qui","sex","sáb"];
+const LATE_START="2026-01"; /* parcelas em atraso contam a partir daqui */
 const brl=v=>"R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:2});
+const brlS=v=>{v=Number(v||0);return v>=10000?"R$ "+(v/1000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mil":brl(v)};
 const brl2=v=>"R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pad=n=>String(n).padStart(2,"0");
-
-const now=new Date();
-const state={y:now.getFullYear(),m:now.getMonth(),view:"prio",predio:"Todos",tenants:[],pays:{},ready:false,db:null,st:null,unid:"on"};
-try{const v=localStorage.getItem("alug_view");if(v)state.view=v;const p=localStorage.getItem("alug_predio");if(p)state.predio=p}catch(e){}
-
-const ym=()=>state.y+"-"+pad(state.m+1);
+const ymOf=(y,m)=>y+"-"+pad(m+1);
+const ymParts=s=>{const [y,m]=s.split("-").map(Number);return {y,m:m-1}};
+const ymAdd=(s,n)=>{const p=ymParts(s);const d=new Date(p.y,p.m+n,1);return ymOf(d.getFullYear(),d.getMonth())};
+const ymLabel=s=>{const p=ymParts(s);return MES3[p.m]+"/"+String(p.y).slice(2)};
 const daysIn=(y,m)=>new Date(y,m+1,0).getDate();
-function dueDay(t){return Math.min(Number(t.dia)||1,daysIn(state.y,state.m))}
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 
-function status(t){
-  const pay=(state.pays[ym()]||{})[t.id];
-  if(pay&&pay.forma) return {k:"paid",label:"Pago · "+pay.forma,pay};
-  if(pay&&pay.obs) return {k:"na",label:pay.obs,pay};
-  const sel=state.y*12+state.m, cur=now.getFullYear()*12+now.getMonth();
-  const d=dueDay(t);
-  if(sel<cur) return {k:"late",label:"Atrasado"};
-  if(sel>cur) return {k:"open",label:"A pagar · dia "+pad(d)};
-  const today=now.getDate();
-  if(d<today){const n=today-d;return {k:"late",label:"Atrasado · "+n+(n===1?" dia":" dias")}}
-  if(d===today) return {k:"open",label:"A pagar · vence hoje"};
-  const n=d-today;
-  return {k:"open",label:"A pagar · "+(n===1?"amanhã":"em "+n+" dias")};
+let now=new Date();
+const CUR=()=>ymOf(now.getFullYear(),now.getMonth());
+const state={y:now.getFullYear(),m:now.getMonth(),view:lsGet("al_view","prazo"),sort:lsGet("al_sort","dia"),st:null,
+  inqTab:"late",q:"",endSel:null,endTab:"todas",tenants:[],pays:{},ready:false,db:null,cfg:{}};
+const ym=()=>ymOf(state.y,state.m);
+
+/* ---------- regras de negócio ---------- */
+function dueDayIn(t,y,m){return Math.min(Number(t.dia)||1,daysIn(y,m))}
+function dueDay(t){return dueDayIn(t,state.y,state.m)}
+function entry(t,ymS){const e=(state.pays[ymS]||{})[t.id];return e||null}
+const isPaid=e=>!!(e&&e.forma);
+const isNA=e=>!!(e&&e.obs);
+function startOf(t){return t.desde&&t.desde>LATE_START?t.desde:LATE_START}
+
+/* parcelas em atraso de um inquilino (todas, até hoje) */
+function lateList(t){
+  if(t.ativo===false) return [];
+  const out=[], cur=CUR(), today=now.getDate();
+  for(let s=startOf(t); s<=cur; s=ymAdd(s,1)){
+    const e=entry(t,s);
+    if(isPaid(e)||isNA(e)) continue;
+    if(s<cur){out.push(s);continue}
+    const p=ymParts(s);
+    if(dueDayIn(t,p.y,p.m)<today) out.push(s);
+  }
+  return out;
 }
-const ST_NAME={paid:"Pago",open:"A pagar",late:"Atrasado",na:"Sem cobrança"};
+/* situação no mês escolhido */
+function status(t){
+  const e=entry(t,ym());
+  if(isPaid(e)) return {k:"paid",temp:"paid",label:"Pago"+(e.parcial?" (parcial)":"")+" · "+e.forma,e};
+  if(isNA(e)) return {k:"na",temp:"na",label:e.obs,e};
+  const sel=ym(), cur=CUR(), d=dueDay(t);
+  if(sel<cur){
+    if(sel<startOf(t)) return e&&e.nao?{k:"late",temp:"late",label:"Não pago"}:{k:"na",temp:"na",label:"Sem registro"};
+    return {k:"late",temp:"late",label:"Atrasado"};
+  }
+  if(sel>cur) return {k:"open",temp:"cold",label:"Vence dia "+pad(d)};
+  const today=now.getDate();
+  if(d<today){const n=today-d;return {k:"late",temp:"late",label:n+(n===1?" dia":" dias")+" de atraso"}}
+  if(d===today) return {k:"open",temp:"hot",label:"Vence hoje"};
+  const n=d-today;
+  if(n<=7) return {k:"open",temp:"warm",label:n===1?"Vence amanhã":"Vence em "+n+" dias"};
+  return {k:"open",temp:"cold",label:"Vence em "+n+" dias"};
+}
+const TEMP_LEVEL={cold:1,warm:2,hot:4,late:5,paid:5,na:0};
+const active=()=>state.tenants.filter(t=>t.ativo!==false);
+const predios=()=>[...new Set(state.tenants.map(t=>t.predio).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR",{numeric:true}));
+const unitCmp=(a,b)=>String(a.unidade).localeCompare(String(b.unidade),"pt-BR",{numeric:true});
+function sorter(){
+  const s=state.sort;
+  if(s==="nome") return (a,b)=>String(a.nome).localeCompare(String(b.nome),"pt-BR");
+  if(s==="end") return (a,b)=>String(a.predio).localeCompare(String(b.predio),"pt-BR",{numeric:true})||unitCmp(a,b);
+  if(s==="valor") return (a,b)=>Number(b.valor||0)-Number(a.valor||0);
+  if(s==="atraso") return (a,b)=>lateList(b).length-lateList(a).length||dueDay(a)-dueDay(b);
+  return (a,b)=>dueDay(a)-dueDay(b)||String(a.nome).localeCompare(String(b.nome),"pt-BR");
+}
 
-function active(){return state.tenants.filter(t=>t.ativo!==false)}
-function filtered(){return active().filter(t=>state.predio==="Todos"||t.predio===state.predio)}
-function predios(){return [...new Set(state.tenants.map(t=>t.predio).filter(Boolean))].sort()}
-
-function cardHTML(t){
-  const s=status(t), d=dueDay(t);
-  return `<button class="rent s-${s.k}" data-id="${esc(t.id)}">
+/* ---------- desenho ---------- */
+const $=id=>document.getElementById(id);
+function thermo(temp){const lv=TEMP_LEVEL[temp]||0;return `<span class="thermo" aria-hidden="true">${[1,2,3,4,5].map(i=>`<i class="${i<=lv?"on":""}"></i>`).join("")}</span>`}
+function tenantCard(t,opts={}){
+  const s=status(t), d=dueDay(t), late=lateList(t);
+  const debt=(opts.showDebt&&late.length)?`<span class="debt">${late.length} parcela${late.length>1?"s":""} em atraso · ${brl(late.length*Number(t.valor||0))}</span>`:"";
+  return `<button class="card t-${s.temp}" data-id="${esc(t.id)}">
     <div class="day"><small>DIA</small><span class="num">${pad(d)}</span></div>
-    <div class="who"><strong>${esc(t.nome||"Sem nome")}</strong><em>${esc(t.unidade||"")} · ${esc(t.predio||"")}</em></div>
+    <div class="who"><strong>${esc(t.nome||"Sem nome")}</strong><em>${esc(t.unidade||"")} · ${esc(t.predio||"")}</em>${opts.thermo?thermo(s.temp):""}${debt}</div>
     <div class="amt"><strong class="num">${brl(t.valor)}</strong><span class="tag">${esc(s.label)}</span></div>
   </button>`;
 }
-function group(title,color,items,opts={}){
+function unitShort(u){return String(u||"—").replace(/^AP\s*/i,"").replace(/^(LJ|Loja)\s*/i,"").replace(/^Sala\s*/i,"")}
+function unitKind(u){u=u||"";return /^(LJ|Loja)/i.test(u)?"LOJA":/^AP/i.test(u)?"AP":/^Sala/i.test(u)?"SALA":"UNID"}
+function unitCard(t){
+  if(t.ativo===false) return `<button class="card t-vac" data-id="${esc(t.id)}">
+    <div class="day unit"><small>${unitKind(t.unidade)}</small><span class="num">${esc(unitShort(t.unidade))}</span></div>
+    <div class="who"><strong>Vaga</strong><em>${esc(t.unidade||"")} · último: ${esc(t.nome||"—")}</em></div>
+    <div class="amt"><strong class="num">${brl(t.valor)}</strong><span class="tag">Desocupada</span></div></button>`;
+  const s=status(t);
+  return `<button class="card t-${s.temp}" data-id="${esc(t.id)}">
+    <div class="day unit"><small>${unitKind(t.unidade)}</small><span class="num">${esc(unitShort(t.unidade))}</span></div>
+    <div class="who"><strong>${esc(t.nome||"Sem nome")}</strong><em>Vence dia ${pad(dueDay(t))}</em></div>
+    <div class="amt"><strong class="num">${brl(t.valor)}</strong><span class="tag">${esc(s.label)}</span></div></button>`;
+}
+function group(title,color,items,render,extra=""){
   if(!items.length) return "";
   const tot=items.reduce((a,t)=>a+Number(t.valor||0),0);
-  let list=items, extra="";
-  if(opts.collapse && !state.showPaid && items.length>3){list=items.slice(0,3);extra=`<button class="more" data-act="showpaid">Ver mais ${items.length-3} pagos</button>`}
-  return `<section class="group"><div class="ghead"><h2>${color?`<span class="dot" style="background:var(--${color})"></span>`:""}${esc(title)}</h2><span class="tot num">${items.length} · ${brl(tot)}</span></div>${list.map(cardHTML).join("")}${extra}</section>`;
+  return `<section class="group"><div class="ghead"><h2>${color?`<span class="dot" style="background:var(--${color})"></span>`:""}${esc(title)}</h2><span class="tot num">${items.length} · ${brl(tot)}</span></div>${extra}${items.map(render).join("")}</section>`;
 }
-function unitShort(u){return String(u||"—").replace(/^AP\s*/i,"").replace(/^(LJ|Loja)\s*/i,"LJ ").replace(/^Sala\s*/i,"S ")}
-function unitCard(t){
-  const on=t.ativo!==false;
-  return `<button class="rent ${on?"u-on":"u-off"}" data-id="${esc(t.id)}">
-    <div class="day unit"><small>${/^(LJ|Loja)/i.test(t.unidade||"")?"LOJA":/^AP/i.test(t.unidade||"")?"AP":"UNID"}</small><span class="num">${esc(unitShort(t.unidade))}</span></div>
-    <div class="who"><strong>${on?esc(t.nome||"Sem nome"):"Vaga"}</strong><em>${esc(t.unidade||"")} · ${esc(t.predio||"")}${on?"":" · último: "+esc(t.nome||"—")}</em></div>
-    <div class="amt"><strong class="num">${brl(t.valor)}</strong><span class="tag">${on?"Alugada":"Desocupada"}</span></div>
-  </button>`;
-}
-const byUnit=(a,b)=>String(a.unidade).localeCompare(String(b.unidade),"pt-BR",{numeric:true});
-function unitsHTML(){
-  const pool=state.tenants.filter(t=>state.predio==="Todos"||t.predio===state.predio);
-  const on=pool.filter(t=>t.ativo!==false), off=pool.filter(t=>t.ativo===false);
-  const sumV=a=>a.reduce((x,t)=>x+Number(t.valor||0),0);
-  let h=`<div class="unav">
-    <button class="on" data-unid="on" aria-pressed="${state.unid==="on"}"><small>Alugadas</small><strong class="num">${on.length}</strong><span class="num">${brl(sumV(on))}/mês</span></button>
-    <button class="off" data-unid="off" aria-pressed="${state.unid==="off"}"><small>Desocupadas</small><strong class="num">${off.length}</strong><span class="num">${off.length?brl(sumV(off))+"/mês parado":"nenhuma vaga"}</span></button>
-  </div>`;
-  const list=state.unid==="on"?on:off;
-  if(!list.length) return h+`<div class="empty">${state.unid==="on"?"Nenhuma unidade alugada aqui.":"Nenhuma unidade desocupada. Tudo alugado!"}</div>`;
-  const pr={};
-  list.forEach(t=>{(pr[t.predio||"Sem prédio"]=pr[t.predio||"Sem prédio"]||[]).push(t)});
-  Object.keys(pr).sort().forEach(p=>{
-    const tot=pool.filter(t=>(t.predio||"Sem prédio")===p).length;
-    h+=`<section class="group"><div class="ghead"><h2>${esc(p)}</h2><span class="tot num">${pr[p].length} de ${tot} unidades</span></div>${pr[p].sort(byUnit).map(unitCard).join("")}</section>`;
-  });
-  return h;
-}
-const byDay=(a,b)=>dueDay(a)-dueDay(b)||String(a.nome).localeCompare(String(b.nome));
 
-function render(){
-  document.getElementById("mLabel").textContent=MESES[state.m].slice(0,3)+" "+state.y;
-  ["prio","dia","predio","unid"].forEach(v=>document.getElementById("t-"+v).setAttribute("aria-pressed",String(state.view===v)));
-  const ps=["Todos",...predios()];
-  if(!ps.includes(state.predio)) state.predio="Todos";
-  document.getElementById("chips").innerHTML=ps.map(p=>`<button data-predio="${esc(p)}" aria-pressed="${p===state.predio}">${esc(p)}</button>`).join("");
-
-  const all=filtered();
+function renderHeader(){
+  $("mLabel").textContent=MES3[state.m]+" "+state.y;
+  const all=active();
   const sum={paid:[0,0],open:[0,0],late:[0,0]};
   all.forEach(t=>{const k=status(t).k;if(sum[k]){sum[k][0]+=Number(t.valor||0);sum[k][1]++}});
   const total=sum.paid[0]+sum.open[0]+sum.late[0];
-  document.getElementById("sLbl").textContent="Total a receber em "+MESES[state.m];
-  document.getElementById("sTot").textContent=brl2(total);
-  document.getElementById("sOf").textContent="Já pago: "+brl2(sum.paid[0])+" · falta "+brl2(total-sum.paid[0]);
+  $("sLbl").textContent="Total a receber em "+MESES[state.m];
+  $("sTot").textContent=brl2(total);
+  $("sOf").textContent="Já pago: "+brl2(sum.paid[0])+" · falta "+brl2(total-sum.paid[0]);
   const pct=v=>(total?v/total*100:0)+"%";
-  document.getElementById("bPaid").style.width=pct(sum.paid[0]);
-  document.getElementById("bOpen").style.width=pct(sum.open[0]);
-  document.getElementById("bLate").style.width=pct(sum.late[0]);
+  $("bPaid").style.width=pct(sum.paid[0]);$("bOpen").style.width=pct(sum.open[0]);$("bLate").style.width=pct(sum.late[0]);
   const qt=n=>n+(n===1?" inquilino":" inquilinos");
-  [["paid","Paid"],["open","Open"],["late","Late"]].forEach(([k,K])=>{
-    document.getElementById("v"+K).textContent=brl(sum[k][0]);
-    document.getElementById("n"+K).textContent=qt(sum[k][1]);
-  });
+  [["paid","Paid"],["open","Open"],["late","Late"]].forEach(([k,K])=>{$("v"+K).textContent=brlS(sum[k][0]);$("n"+K).textContent=qt(sum[k][1])});
   document.querySelectorAll(".tile").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.st===state.st)));
-  document.getElementById("sHint").textContent=state.st?"Mostrando só: "+ST_NAME[state.st]+" · toque de novo para ver todos":"Toque num quadro para ver só esses inquilinos";
-  const items=state.st?all.filter(t=>status(t).k===state.st):all;
-
-  const L=document.getElementById("list");
-  if(!state.ready){return}
-  if(!state.db){L.innerHTML=`<div class="empty">Entre com sua conta para ver os aluguéis.</div>`;return}
-  if(!state.tenants.length){L.innerHTML=`<div class="empty">Nenhum inquilino ainda.<br>Toque em <b>+ Inquilino</b> para cadastrar o primeiro.</div>`;return}
-
-  if(state.view==="unid"){L.innerHTML=unitsHTML();return}
-  let html="";
-  if(state.view==="prio"){
-    const g={late:[],open:[],paid:[],na:[]};
-    items.forEach(t=>g[status(t).k].push(t));
-    Object.values(g).forEach(a=>a.sort(byDay));
-    html+=group("Atrasado","late",g.late)+group("A pagar","soon",g.open)+group("Pago","paid",g.paid)+group("Sem cobrança no mês","later",g.na);
-  }else if(state.view==="dia"){
-    const days={};
-    items.forEach(t=>{const d=dueDay(t);(days[d]=days[d]||[]).push(t)});
-    Object.keys(days).map(Number).sort((a,b)=>a-b).forEach(d=>{
-      const wd=SEM[new Date(state.y,state.m,d).getDay()];
-      html+=group("Dia "+pad(d)+" · "+wd,null,days[d].sort(byDay));
-    });
-  }else{
-    const pr={};
-    items.forEach(t=>{(pr[t.predio||"Sem prédio"]=pr[t.predio||"Sem prédio"]||[]).push(t)});
-    Object.keys(pr).sort().forEach(p=>html+=group(p,null,pr[p].sort(byDay)));
-  }
-  if(!items.length) html=`<div class="empty">${state.st?"Nenhum inquilino em "+ST_NAME[state.st]+" neste mês.":"Nenhum inquilino neste prédio."}</div>`;
-  L.innerHTML=html;
+  /* alerta geral de atrasos (sempre até hoje) */
+  const lateT=active().map(t=>({t,l:lateList(t)})).filter(x=>x.l.length);
+  const parc=lateT.reduce((a,x)=>a+x.l.length,0), val=lateT.reduce((a,x)=>a+x.l.length*Number(x.t.valor||0),0);
+  $("alert").hidden=!state.ready||!lateT.length;
+  $("alT").textContent=lateT.length+(lateT.length===1?" inquilino atrasado":" inquilinos atrasados");
+  $("alS").textContent=parc+(parc===1?" parcela":" parcelas")+" em atraso · "+brl(val);
+  document.querySelectorAll(".menu [data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===state.view)));
+  $("sortBar").hidden=state.view==="idx"||(state.view==="end"&&!state.endSel);
+  $("sortSel").value=state.sort;
 }
 
-/* sheets */
-const host=document.getElementById("sheetHost");
+function render(){
+  renderHeader();
+  const L=$("list");
+  if(!state.ready){L.innerHTML=`<div class="empty">Carregando…</div>`;return}
+  if(!state.tenants.length){L.innerHTML=`<div class="empty">Nenhum aluguel cadastrado ainda.<br>Toque em <b>Dados e conta</b>, lá embaixo, para importar o backup.</div>`;return}
+  if(state.view==="inq") L.innerHTML=viewInq();
+  else if(state.view==="end") L.innerHTML=viewEnd();
+  else if(state.view==="idx") L.innerHTML=viewIdx();
+  else L.innerHTML=viewPrazo();
+}
+
+function viewPrazo(){
+  let items=active(); const srt=sorter();
+  if(state.st) items=items.filter(t=>status(t).k===state.st);
+  const g={late:[],hot:[],warm:[],cold:[],paid:[],na:[]};
+  items.forEach(t=>g[status(t).temp].push(t));
+  Object.values(g).forEach(a=>a.sort(srt));
+  const r=t=>tenantCard(t,{thermo:true});
+  let h="";
+  if(state.st) h+=`<div class="note">Mostrando só: <b>${{paid:"Pago",open:"A pagar",late:"Atrasado"}[state.st]}</b>. Toque no quadro de novo para ver todos.</div>`;
+  h+=group("Atrasado","late",g.late,r)+group("Vence hoje","hot",g.hot,r)+group("Vence nos próximos 7 dias","warm",g.warm,r)+group("Mais pra frente","cold",g.cold,r)+group("Pago","paid",g.paid,r)+group("Sem cobrança neste mês","gray",g.na,r);
+  return h||`<div class="empty">Ninguém nesta lista.</div>`;
+}
+
+function viewInq(){
+  const all=active().map(t=>({t,l:lateList(t)}));
+  const late=all.filter(x=>x.l.length), ok=all.filter(x=>!x.l.length);
+  const parc=late.reduce((a,x)=>a+x.l.length,0);
+  let h=`<div class="seg">
+    <button class="ok" data-inq="ok" aria-pressed="${state.inqTab==="ok"}"><small>Em dia</small><strong class="num">${ok.length}</strong><span>sem parcelas atrasadas</span></button>
+    <button class="bad" data-inq="late" aria-pressed="${state.inqTab==="late"}"><small>Atrasados</small><strong class="num">${late.length}</strong><span class="num">${parc} parcela${parc===1?"":"s"} em atraso</span></button>
+  </div>
+  <input class="search" id="qInput" type="search" placeholder="Buscar inquilino pelo nome" value="${esc(state.q)}" autocomplete="off">`;
+  let list=(state.inqTab==="ok"?ok:late).map(x=>x.t);
+  const q=state.q.trim().toLowerCase();
+  if(q) list=list.filter(t=>String(t.nome).toLowerCase().includes(q)||String(t.unidade).toLowerCase().includes(q)||String(t.predio).toLowerCase().includes(q));
+  list.sort(sorter());
+  if(!list.length) return h+`<div class="empty">${q?"Nenhum inquilino com esse nome.":state.inqTab==="ok"?"Nenhum inquilino em dia.":"Ninguém atrasado. Tudo em dia!"}</div>`;
+  return h+`<section class="group">${list.map(t=>tenantCard(t,{showDebt:true})).join("")}</section>`;
+}
+
+function viewEnd(){
+  const ps=predios();
+  if(state.endSel&&ps.includes(state.endSel)) return viewEndOne(state.endSel);
+  state.endSel=null;
+  let h=`<h2 class="pagetitle">Endereços</h2>`;
+  ps.forEach(p=>{
+    const u=state.tenants.filter(t=>t.predio===p), on=u.filter(t=>t.ativo!==false), vac=u.length-on.length;
+    const st=on.map(status), paid=st.filter(s=>s.k==="paid").length, late=on.filter(t=>lateList(t).length).length;
+    const tot=on.reduce((a,t)=>a+Number(t.valor||0),0);
+    const rec=on.filter(t=>status(t).k==="paid").reduce((a,t)=>a+Number(t.valor||0),0);
+    h+=`<button class="addr" data-end="${esc(p)}">
+      <h3>${esc(p)}<span>›</span></h3>
+      <div class="facts"><span class="chip">${u.length} unidade${u.length>1?"s":""}</span><span class="chip ok">${on.length} alugada${on.length>1?"s":""}</span>${vac?`<span class="chip vac">${vac} vaga${vac>1?"s":""}</span>`:""}${late?`<span class="chip bad">${late} atrasado${late>1?"s":""}</span>`:""}</div>
+      <div class="mini"><i style="width:${tot?rec/tot*100:0}%;background:var(--paid)"></i></div>
+      <div class="note" style="text-align:left">${MES3[state.m]}: recebido ${brl(rec)} de ${brl(tot)} · ${paid} de ${on.length} pagos</div>
+    </button>`;
+  });
+  h+=`<button class="btn ghost" data-act="addunit">+ Adicionar unidade ou endereço</button>`;
+  return h;
+}
+function viewEndOne(p){
+  const u=state.tenants.filter(t=>t.predio===p).sort(state.sort==="dia"?unitCmp:sorter());
+  const on=u.filter(t=>t.ativo!==false), off=u.filter(t=>t.ativo===false);
+  const tab=state.endTab;
+  const list=tab==="alug"?on:tab==="vagas"?off:u;
+  return `<button class="back" data-act="endback">‹ Todos os endereços</button>
+  <h2 class="pagetitle">${esc(p)}</h2>
+  <div class="seg three">
+    <button class="neu" data-endtab="todas" aria-pressed="${tab==="todas"}"><small>Todas</small><strong class="num">${u.length}</strong></button>
+    <button class="ok" data-endtab="alug" aria-pressed="${tab==="alug"}"><small>Alugadas</small><strong class="num">${on.length}</strong></button>
+    <button class="vac" data-endtab="vagas" aria-pressed="${tab==="vagas"}"><small>Vagas</small><strong class="num">${off.length}</strong></button>
+  </div>
+  ${list.length?`<section class="group">${list.map(unitCard).join("")}</section>`:`<div class="empty">${tab==="vagas"?"Nenhuma unidade vaga aqui.":"Nada aqui."}</div>`}
+  <div class="row2"><button class="btn ghost" data-act="addunit" data-predio="${esc(p)}">+ Adicionar unidade</button><button class="btn ghost" data-act="renend" data-predio="${esc(p)}">Renomear endereço</button></div>`;
+}
+
+/* ---------- índice de imóveis ---------- */
+function computeIndex(){
+  const months=Object.keys(state.pays).filter(s=>s<CUR()).sort();
+  const res=state.tenants.map(t=>{
+    let obs=0,occ=0,vac=0,unpaid=0,ep=0,prevVac=false,first=null;
+    months.forEach(s=>{
+      const e=entry(t,s);
+      const isVac=e&&e.obs&&/desoc|vago|saiu/i.test(e.obs);
+      const noInfo=e&&e.obs&&!isVac;
+      if(noInfo) return;
+      if(first===null){ if(!e) return; first=s; }
+      obs++;
+      if(isVac){vac++; if(!prevVac) ep++; prevVac=true;}
+      else {occ++; prevVac=false; if(!isPaid(e)) unpaid++;}
+    });
+    if(t.ativo===false){ /* vaga hoje conta como mais um mês vago */ obs++;vac++; if(!prevVac) ep++; }
+    const occP=obs?occ/obs:0, payP=occ?(occ-unpaid)/occ:0;
+    const avgVac=ep?vac/ep:0;
+    const score=Math.round(occP*100);
+    const grade=score>=95?"alta":score>=85?"media":"baixa";
+    return {t,obs,occ,vac,unpaid,ep,occP,payP,avgVac,score,grade};
+  }).filter(r=>r.obs>0);
+  return {months,res};
+}
+function viewIdx(){
+  const {months,res}=computeIndex();
+  if(!res.length) return `<button class="back" data-act="idxback">‹ Voltar</button><div class="empty">Ainda não há meses suficientes para calcular o índice.</div>`;
+  const first=months.find(s=>res.some(r=>entry(r.t,s)))||months[0], last=months[months.length-1];
+  const gName={alta:"Liquidez alta",media:"Liquidez média",baixa:"Liquidez baixa"};
+  const gColor={alta:"var(--paid)",media:"var(--warm)",baixa:"var(--late)"};
+  const row=r=>`<div class="idxrow"><b>${esc(r.t.unidade||"—")} · ${esc(r.t.predio)}</b><span class="grade g-${r.grade}">${r.score}%</span>
+    <div class="meter"><i style="width:${r.score}%;background:${gColor[r.grade]}"></i></div>
+    <em>${r.vac?`Ficou vago ${r.vac} ${r.vac>1?"meses":"mês"} em ${r.ep} ${r.ep>1?"vezes":"vez"} (média de ${r.avgVac.toFixed(1).replace(".",",")} meses cada)`:"Nunca ficou vago no período"} · pagou ${Math.round(r.payP*100)}% dos meses alugados</em></div>`;
+  /* por endereço */
+  const byP={};res.forEach(r=>{(byP[r.t.predio]=byP[r.t.predio]||[]).push(r)});
+  const pRows=Object.entries(byP).map(([p,a])=>{const o=a.reduce((x,r)=>x+r.occ,0),b=a.reduce((x,r)=>x+r.obs,0),v=a.reduce((x,r)=>x+r.vac,0);return {p,score:Math.round(b?o/b*100:0),v,n:a.length}}).sort((a,b)=>b.score-a.score);
+  const worst=[...res].filter(r=>r.vac>0).sort((a,b)=>b.vac-a.vac||a.score-b.score);
+  const best=[...res].sort((a,b)=>b.score-a.score||b.payP-a.payP);
+  return `<button class="back" data-act="idxback">‹ Voltar</button>
+  <h2 class="pagetitle">Índice Imóveis</h2>
+  <div class="idx"><p>Mostra a facilidade de manter cada imóvel alugado, de ${ymLabel(first)} até ${ymLabel(last)}. A porcentagem é a parte do tempo em que a unidade ficou alugada. Acima de 95% é liquidez alta, entre 85% e 95% é média, abaixo de 85% é baixa. Meses sem nenhum registro na planilha antiga, por 2 meses ou mais seguidos, contam como vagos.</p></div>
+  <section class="group"><div class="ghead"><h2>Por endereço</h2></div><div class="idx">${pRows.map(r=>`<div class="idxrow"><b>${esc(r.p)}</b><span class="grade g-${r.score>=95?"alta":r.score>=85?"media":"baixa"}">${r.score}%</span><div class="meter"><i style="width:${r.score}%;background:${gColor[r.score>=95?"alta":r.score>=85?"media":"baixa"]}"></i></div><em>${r.n} ${r.n===1?"unidade":"unidades"} · ${r.v} ${r.v===1?"mês vago":"meses vagos"} somando todas</em></div>`).join("")}</div></section>
+  <section class="group"><div class="ghead"><h2>Ficaram mais tempo desocupados</h2><span class="tot">${worst.length}</span></div><div class="idx">${worst.length?worst.slice(0,12).map(row).join(""):"<p>Nenhum imóvel ficou vago no período.</p>"}</div></section>
+  ${state.idxAll?`<section class="group"><div class="ghead"><h2>Todos os imóveis, do mais líquido ao menos</h2></div><div class="idx">${best.map(row).join("")}</div></section>`:`<button class="btn ghost" data-act="idxall">Ver todos os ${best.length} imóveis</button>`}`;
+}
+
+/* ---------- folhas ---------- */
+const host=$("sheetHost");
 function closeSheet(){host.innerHTML=""}
 function openSheet(inner){
   host.innerHTML=`<div class="scrim" id="scrim"><div class="sheet" role="dialog" aria-modal="true">${inner}</div></div>`;
-  document.getElementById("scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeSheet()});
+  $("scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeSheet()});
+  return host.querySelector(".sheet");
 }
-function toast(msg){const h=document.getElementById("toastHost");h.innerHTML=`<div class="toast">${esc(msg)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>h.innerHTML="",2200)}
+function toast(msg){const h=$("toastHost");h.innerHTML=`<div class="toast">${esc(msg)}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>h.innerHTML="",2600)}
+const errToast=()=>toast("Não salvou. Confira a internet e tente de novo.");
 
-async function writePay(id,entry){
-  await state.db.collection("pagamentos").doc(ym()).set({[id]:entry},{merge:true});
-}
-function openTenant(id){
-  const t=state.tenants.find(x=>x.id===id); if(!t) return;
-  const s=status(t); const d=dueDay(t);
-  const mes=MESES[state.m]+" "+state.y;
-  let action;
-  if(t.ativo===false){action=`<div class="note">Unidade desocupada. Último inquilino: ${esc(t.nome||"—")}</div><button class="btn pay" data-act="rent">Alugar para novo inquilino</button>`}
-  else if(s.k==="na"){
-    action=`<div class="note">Neste mês: ${esc(s.pay.obs)}</div>
-    <button class="btn ghost" data-act="unpay">Limpar e cobrar normalmente</button>`;
-  }
-  else if(s.k==="paid"){
-    action=`<div class="note">Pago em ${esc(new Date(s.pay.em).toLocaleDateString("pt-BR"))}${s.pay.forma?" via "+esc(s.pay.forma):""}</div>
-    <button class="btn ghost" data-act="unpay">Desfazer pagamento</button>`;
+/* operações de dados (usadas pelos botões e pela Selma) */
+const ops={
+  async pay(id,ymS,forma="Pix"){const t=findT(id);if(!t)throw new Error("Inquilino não encontrado");
+    await state.db.collection("pagamentos").doc(ymS).set({[id]:{forma,valor:Number(t.valor||0),em:new Date().toISOString()}},{merge:true});},
+  async clear(id,ymS){await state.db.collection("pagamentos").doc(ymS).set({[id]:null},{merge:true});},
+  async noCharge(id,ymS,motivo){await state.db.collection("pagamentos").doc(ymS).set({[id]:{obs:motivo||"Sem cobrança"}},{merge:true});},
+  async edit(id,fields){const ok={};["nome","predio","unidade","dia","valor","ativo","desde"].forEach(k=>{if(fields[k]!==undefined&&fields[k]!==null)ok[k]=fields[k]});
+    if(ok.dia!==undefined)ok.dia=Math.max(1,Math.min(31,parseInt(ok.dia,10)||1));
+    if(ok.valor!==undefined)ok.valor=Number(ok.valor)||0;
+    await state.db.collection("inquilinos").doc(id).update(ok);},
+  async vacate(id){await state.db.collection("inquilinos").doc(id).update({ativo:false});
+    await state.db.collection("pagamentos").doc(CUR()).set({[id]:{obs:"Desocupado"}},{merge:true});},
+  async rent(id,f){const body={ativo:true,desde:CUR(),nome:f.nome||"Sem nome"};if(f.dia)body.dia=Math.max(1,Math.min(31,parseInt(f.dia,10)||1));if(f.valor!==undefined&&f.valor!=="")body.valor=Number(f.valor)||0;
+    await state.db.collection("inquilinos").doc(id).update(body);
+    await state.db.collection("pagamentos").doc(CUR()).set({[id]:null},{merge:true});},
+  async add(f){const body={nome:f.nome||"Sem nome",predio:f.predio,unidade:f.unidade||"",dia:Math.max(1,Math.min(31,parseInt(f.dia,10)||10)),valor:Number(f.valor)||0,ativo:f.ativo!==false,desde:CUR()};
+    const ref=await state.db.collection("inquilinos").add(body);return ref.id;},
+  async renameEnd(oldP,newP){const b=state.db.batch();state.tenants.filter(t=>t.predio===oldP).forEach(t=>b.update(state.db.collection("inquilinos").doc(t.id),{predio:newP}));await b.commit();}
+};
+const findT=id=>state.tenants.find(x=>x.id===id);
+
+function openTenant(id,yearSel){
+  const t=findT(id); if(!t) return;
+  const year=yearSel||state.y;
+  const s=status(t), late=lateList(t), mes=MESES[state.m];
+  let main="";
+  if(t.ativo===false){
+    main=`<div class="note">Unidade desocupada. Último inquilino: <b>${esc(t.nome||"—")}</b></div><button class="btn pay" data-act="rent">Alugar para novo inquilino</button>`;
+  }else if(s.k==="paid"){
+    main=`<div class="note">${mes}: pago${s.e.em?" em "+esc(new Date(s.e.em).toLocaleDateString("pt-BR")):""} via ${esc(s.e.forma)}</div><button class="btn ghost" data-act="unpay">Desfazer pagamento de ${mes}</button>`;
+  }else if(s.k==="na"){
+    main=`<div class="note">${mes}: ${esc(s.e?s.e.obs:"sem cobrança")}</div>${s.e?`<button class="btn ghost" data-act="unpay">Cobrar normalmente em ${mes}</button>`:""}`;
   }else{
-    action=`<div><div class="note" style="margin-bottom:8px">Como pagou?</div>
-      <div class="row" id="formas"><button aria-pressed="true" data-f="Pix">Pix</button><button aria-pressed="false" data-f="Dinheiro">Dinheiro</button><button aria-pressed="false" data-f="Outro">Outro</button></div></div>
-      <button class="btn pay" data-act="pay">Marcar como pago</button>`;
+    main=`<div><div class="note" style="margin-bottom:8px">Como pagou?</div>
+      <div class="opts"><button aria-pressed="true" data-f="Pix">Pix</button><button aria-pressed="false" data-f="Dinheiro">Dinheiro</button><button aria-pressed="false" data-f="Boleto">Boleto</button></div></div>
+      <button class="btn pay" data-act="pay">Recebi o aluguel de ${mes}</button>`;
   }
-  openSheet(`<h3>${esc(t.nome||"Sem nome")}</h3><div class="sub">${esc(t.unidade)} · ${esc(t.predio)}</div>
-    <div class="kv"><div><small>Vence</small><b class="num">Dia ${pad(d)}</b></div><div><small>Valor</small><b class="num">${brl2(t.valor)}</b></div><div><small>${esc(MESES[state.m].slice(0,3))}</small><b>${esc(t.ativo===false?"Desocupada":s.k==="paid"?"Pago":s.k==="na"?s.pay.obs:ST_NAME[s.k])}</b></div></div>
-    ${action}
-    ${t.ativo===false?"":`<button class="btn ghost" data-act="edit">Editar inquilino</button><button class="btn danger" data-act="vacate">Inquilino saiu (desocupar unidade)</button>`}
+  const lateBox=late.length&&t.ativo!==false?`<div class="box"><h4>${late.length} parcela${late.length>1?"s":""} em atraso · ${brl(late.length*Number(t.valor||0))}</h4>
+    ${late.map(m=>`<div class="ln"><span>${ymLabel(m)} · ${brl(t.valor)}</span><button data-paym="${m}">Recebi</button></div>`).join("")}</div>`:"";
+  const cells=MES3.map((n,i)=>{
+    const s2=ymOf(year,i), e=entry(t,s2);
+    let c="m-none",lbl="—";
+    if(isPaid(e)){c="m-paid";lbl=e.parcial?"parcial":"pago"}
+    else if(isNA(e)){c="m-na";lbl=/desoc|vago|saiu/i.test(e.obs)?"vago":"s/ cob."}
+    else if(s2>CUR()){c="m-none";lbl=""}
+    else if(late.includes(s2)){c="m-late";lbl="atraso"}
+    else if(s2===CUR()){c="m-open";lbl="a pagar"}
+    else if(e&&e.nao){c="m-late";lbl="não pg"}
+    return `<button class="${c}" data-cell="${s2}"><span>${n}</span><i>${lbl}</i></button>`;
+  }).join("");
+  const sh=openSheet(`<h3>${esc(t.nome||"Sem nome")}</h3><div class="sub">${esc(t.unidade)} · ${esc(t.predio)}</div>
+    <div class="kv"><div><small>Vence</small><b class="num">Dia ${pad(dueDay(t))}</b></div><div><small>Valor</small><b class="num">${brl2(t.valor)}</b></div><div><small>${MES3[state.m]}</small><b>${esc(t.ativo===false?"Vaga":{paid:"Pago",open:"A pagar",late:"Atrasado",na:"Sem cobr."}[s.k])}</b></div></div>
+    ${lateBox}
+    ${main}
+    <div class="hist"><h4>Histórico de ${year}<span><button data-yr="${year-1}" aria-label="Ano anterior">‹</button><button data-yr="${year+1}" aria-label="Próximo ano">›</button></span></h4>
+      <div class="months">${cells}</div>
+      <div class="legend"><span><b style="background:var(--paid)"></b>pago</span><span><b style="background:var(--late)"></b>atrasado</span><span><b style="background:var(--cold)"></b>a pagar</span><span><b style="background:var(--gray)"></b>vago / sem cobrança</span></div>
+      <div class="note" style="margin-top:6px">Toque num mês para mudar.</div></div>
+    <button class="btn ghost" data-act="edit">Editar dados</button>
+    ${t.ativo===false?"":`<button class="btn danger" data-act="vacate">O inquilino saiu (deixar vaga)</button>`}
     <button class="btn ghost" data-act="close">Fechar</button>`);
-  const sh=host.querySelector(".sheet");
   let forma="Pix";
   sh.addEventListener("click",async e=>{
     const f=e.target.closest("[data-f]");
     if(f){forma=f.dataset.f;sh.querySelectorAll("[data-f]").forEach(b=>b.setAttribute("aria-pressed",String(b===f)));return}
+    const yr=e.target.closest("[data-yr]"); if(yr){openTenant(id,Number(yr.dataset.yr));return}
+    const pm=e.target.closest("[data-paym]");
+    if(pm){pm.disabled=true;try{await ops.pay(id,pm.dataset.paym,"Pix");toast(t.nome+" · "+ymLabel(pm.dataset.paym)+" recebido");openTenant(id,year)}catch(x){pm.disabled=false;errToast()}return}
+    const cell=e.target.closest("[data-cell]"); if(cell){cellMenu(t,cell.dataset.cell,year);return}
     const a=e.target.closest("[data-act]"); if(!a) return;
-    if(a.dataset.act==="close") closeSheet();
-    if(a.dataset.act==="edit") openForm(t);
-    if(a.dataset.act==="rent") openForm(Object.assign({},t,{nome:"",ativo:true}),{rent:true});
-    if(a.dataset.act==="vacate"){
+    const act=a.dataset.act;
+    if(act==="close") closeSheet();
+    if(act==="edit") openForm(t);
+    if(act==="rent") openRent(t);
+    if(act==="pay"){a.disabled=true;try{await ops.pay(id,ym(),forma);closeSheet();toast(t.nome+" · pago em "+mes)}catch(x){a.disabled=false;errToast()}}
+    if(act==="unpay"){try{await ops.clear(id,ym());closeSheet();toast("Pronto")}catch(x){errToast()}}
+    if(act==="vacate"){
       if(!a.dataset.armed){a.dataset.armed="1";a.textContent="Toque de novo para confirmar";return}
-      try{await state.db.collection("inquilinos").doc(t.id).update({ativo:false});closeSheet();toast(t.unidade+" agora está desocupada")}
-      catch(err){toast("Não salvou. Tente de novo.")}
-    }
-    if(a.dataset.act==="pay"){
-      a.disabled=true;
-      try{await writePay(t.id,{forma,valor:Number(t.valor||0),em:new Date().toISOString()});closeSheet();toast(t.nome+" · pago em "+mes)}
-      catch(err){a.disabled=false;toast("Não salvou. Tente de novo.")}
-    }
-    if(a.dataset.act==="unpay"){
-      try{await writePay(t.id,null);closeSheet();toast(s.k==="na"?"Pronto":"Pagamento desfeito")}
-      catch(err){toast("Não salvou. Tente de novo.")}
+      try{await ops.vacate(id);closeSheet();toast((t.unidade||"Unidade")+" agora está vaga")}catch(x){errToast()}
     }
   });
 }
-
-function openForm(t,opt={}){
-  const isNew=!t; t=t||{nome:"",predio:state.predio!=="Todos"?state.predio:(predios()[0]||""),unidade:"",dia:10,valor:"",ativo:true};
+function cellMenu(t,s2,year){
+  const sh=openSheet(`<h3>${MESES[ymParts(s2).m]} de ${ymParts(s2).y}</h3><div class="sub">${esc(t.nome)} · ${esc(t.unidade)}</div>
+    <button class="btn pay" data-c="pay">Pago</button>
+    <button class="btn danger" data-c="clear">Não pago</button>
+    <button class="btn ghost" data-c="vago">Estava vago</button>
+    <button class="btn ghost" data-c="nc">Sem cobrança (combinado)</button>
+    <button class="btn ghost" data-c="back">Voltar</button>`);
+  sh.addEventListener("click",async e=>{
+    const b=e.target.closest("[data-c]"); if(!b) return;
+    const c=b.dataset.c;
+    if(c==="back"){openTenant(t.id,year);return}
+    try{
+      if(c==="pay") await ops.pay(t.id,s2,"Pix");
+      if(c==="clear") await ops.clear(t.id,s2);
+      if(c==="vago") await ops.noCharge(t.id,s2,"Desocupado");
+      if(c==="nc") await ops.noCharge(t.id,s2,"Sem cobrança");
+      toast("Salvo");openTenant(t.id,year);
+    }catch(x){errToast()}
+  });
+}
+function predioSelect(cur){
   const ps=predios();
-  openSheet(`<h3>${isNew?"Novo inquilino":opt.rent?"Alugar "+esc(t.unidade):"Editar inquilino"}</h3>
+  return `<select id="f-predio">${ps.map(p=>`<option ${p===cur?"selected":""}>${esc(p)}</option>`).join("")}<option value="__novo" ${!ps.length?"selected":""}>+ Endereço novo…</option></select>`;
+}
+function openForm(t,preset){
+  const isNew=!t; t=t||{nome:"",predio:preset||state.endSel||predios()[0]||"",unidade:"",dia:10,valor:"",ativo:true};
+  const sh=openSheet(`<h3>${isNew?"Nova unidade":"Editar dados"}</h3>
   <form id="tf">
-    <label>Nome<input id="f-nome" value="${esc(t.nome)}" placeholder="Ex.: Maria / João" autocomplete="off"></label>
+    <label class="f">Nome do inquilino<input id="f-nome" value="${esc(t.nome)}" placeholder="Ex.: Maria / João" autocomplete="off"></label>
+    <label class="f">Endereço${predioSelect(t.predio)}</label>
+    <label class="f" id="novoWrap" ${predios().length?"hidden":""}>Nome do endereço novo<input id="f-predionovo" placeholder="Ex.: QNL 10 Taguatinga"></label>
     <div class="two">
-      <label>Prédio<select id="f-predio">${ps.map(p=>`<option ${p===t.predio?"selected":""}>${esc(p)}</option>`).join("")}<option value="__novo">+ Outro prédio…</option></select></label>
-      <label>Unidade<input id="f-unidade" value="${esc(t.unidade)}" placeholder="AP 101"></label>
+      <label class="f">Unidade<input id="f-unidade" value="${esc(t.unidade)}" placeholder="AP 101"></label>
+      <label class="f">Dia do vencimento<input id="f-dia" type="number" min="1" max="31" inputmode="numeric" value="${esc(t.dia)}"></label>
     </div>
-    <label id="novoWrap" hidden>Nome do prédio novo<input id="f-predionovo" placeholder="Ex.: QNL 10"></label>
-    <div class="two">
-      <label>Dia do vencimento<input id="f-dia" type="number" min="1" max="31" inputmode="numeric" value="${esc(t.dia)}"></label>
-      <label>Valor (R$)<input id="f-valor" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(t.valor)}"></label>
-    </div>
-    <label>Situação da unidade<select id="f-ativo"><option value="1" ${t.ativo!==false?"selected":""}>Alugada</option><option value="0" ${t.ativo===false?"selected":""}>Desocupada</option></select></label>
+    <label class="f">Valor do aluguel (R$)<input id="f-valor" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(t.valor)}"></label>
+    <label class="f">Situação<select id="f-ativo"><option value="1" ${t.ativo!==false?"selected":""}>Alugada</option><option value="0" ${t.ativo===false?"selected":""}>Vaga (desocupada)</option></select></label>
     <button class="btn pay" type="submit">${isNew?"Cadastrar":"Salvar"}</button>
-    ${isNew?"":`<button class="btn danger" type="button" id="delBtn">Apagar inquilino</button>`}
+    ${isNew?"":`<button class="btn danger" type="button" id="delBtn">Apagar esta unidade</button>`}
     <button class="btn ghost" type="button" id="cancelBtn">Cancelar</button>
   </form>`);
-  const sel=document.getElementById("f-predio");
-  if(!ps.length){sel.value="__novo";document.getElementById("novoWrap").hidden=false}
-  sel.addEventListener("change",()=>{document.getElementById("novoWrap").hidden=sel.value!=="__novo"});
-  document.getElementById("cancelBtn").onclick=closeSheet;
-  const del=document.getElementById("delBtn");
-  if(del){let armed=false;del.onclick=async()=>{
-    if(!armed){armed=true;del.textContent="Toque de novo para apagar";return}
-    try{await state.db.collection("inquilinos").doc(t.id).delete();closeSheet();toast("Inquilino apagado")}catch(e){toast("Não apagou. Tente de novo.")}
+  const sel=$("f-predio");
+  sel.addEventListener("change",()=>{$("novoWrap").hidden=sel.value!=="__novo"});
+  $("cancelBtn").onclick=closeSheet;
+  const del=$("delBtn");
+  if(del){del.onclick=async()=>{
+    if(!del.dataset.armed){del.dataset.armed="1";del.textContent="Toque de novo para apagar de vez";return}
+    try{await state.db.collection("inquilinos").doc(t.id).delete();closeSheet();toast("Unidade apagada")}catch(e){errToast()}
   }}
-  document.getElementById("tf").addEventListener("submit",async e=>{
+  $("tf").addEventListener("submit",async e=>{
     e.preventDefault();
-    let predio=sel.value==="__novo"?document.getElementById("f-predionovo").value.trim():sel.value;
-    const nome=document.getElementById("f-nome").value.trim();
-    const dia=Math.max(1,Math.min(31,parseInt(document.getElementById("f-dia").value,10)||1));
-    const valor=parseFloat(document.getElementById("f-valor").value)||0;
-    if(!predio){toast("Escolha o prédio");return}
-    const body={nome:nome||"Sem nome",predio,unidade:document.getElementById("f-unidade").value.trim(),dia,valor,ativo:document.getElementById("f-ativo").value==="1"};
+    const predio=sel.value==="__novo"?$("f-predionovo").value.trim():sel.value;
+    if(!predio){toast("Escreva o endereço");return}
+    const f={nome:$("f-nome").value.trim()||"Sem nome",predio,unidade:$("f-unidade").value.trim(),dia:$("f-dia").value,valor:$("f-valor").value,ativo:$("f-ativo").value==="1"};
     try{
-      if(isNew) await state.db.collection("inquilinos").add(body);
-      else await state.db.collection("inquilinos").doc(t.id).set(body);
-      closeSheet();toast(isNew?"Inquilino cadastrado":"Salvo");
-    }catch(err){toast("Não salvou. Tente de novo.")}
+      if(isNew) await ops.add(f); else await ops.edit(t.id,f);
+      closeSheet();toast(isNew?"Unidade cadastrada":"Salvo");
+    }catch(x){errToast()}
+  });
+}
+function openRent(t){
+  const sh=openSheet(`<h3>Alugar ${esc(t.unidade)}</h3><div class="sub">${esc(t.predio)}</div>
+  <form id="rf">
+    <label class="f">Nome do novo inquilino<input id="r-nome" autocomplete="off" required></label>
+    <div class="two"><label class="f">Dia do vencimento<input id="r-dia" type="number" min="1" max="31" inputmode="numeric" value="${esc(t.dia)}"></label>
+    <label class="f">Valor (R$)<input id="r-valor" type="number" min="0" step="0.01" inputmode="decimal" value="${esc(t.valor)}"></label></div>
+    <button class="btn pay" type="submit">Alugar</button><button class="btn ghost" type="button" id="rc">Cancelar</button>
+  </form>`);
+  $("rc").onclick=closeSheet;
+  $("rf").addEventListener("submit",async e=>{e.preventDefault();
+    try{await ops.rent(t.id,{nome:$("r-nome").value.trim(),dia:$("r-dia").value,valor:$("r-valor").value});closeSheet();toast(t.unidade+" alugada")}catch(x){errToast()}});
+}
+function openRename(p){
+  openSheet(`<h3>Renomear endereço</h3><form id="nf"><label class="f">Novo nome<input id="n-p" value="${esc(p)}"></label>
+  <button class="btn main" type="submit">Salvar</button><button class="btn ghost" type="button" id="nc">Cancelar</button></form>`);
+  $("nc").onclick=closeSheet;
+  $("nf").addEventListener("submit",async e=>{e.preventDefault();const n=$("n-p").value.trim();if(!n||n===p){closeSheet();return}
+    try{await ops.renameEnd(p,n);state.endSel=n;closeSheet();toast("Endereço renomeado")}catch(x){errToast()}});
+}
+
+/* ---------- conta, backup e Selma (configuração) ---------- */
+function openAccount(){
+  const hasKey=!!(state.cfg&&state.cfg.apiKey);
+  const sh=openSheet(`<h3>Dados e conta</h3>
+    <button class="btn ghost" data-a="exp">Baixar backup dos dados</button>
+    <label class="btn ghost" for="impFile" style="cursor:pointer">Importar backup</label>
+    <input type="file" id="impFile" accept=".json,application/json" hidden>
+    <div class="note">Selma: ${hasKey?"ativada para conversas escritas.":"funciona com os botões de perguntas. Para entender mensagens escritas, coloque a chave da Anthropic."}</div>
+    <button class="btn ghost" data-a="key">${hasKey?"Trocar chave da Selma":"Ativar Selma (chave da Anthropic)"}</button>
+    <button class="btn ghost" data-a="out">Sair da conta</button>
+    <button class="btn ghost" data-a="close">Fechar</button>`);
+  sh.addEventListener("click",e=>{const a=e.target.closest("[data-a]");if(!a)return;const k=a.dataset.a;
+    if(k==="close")closeSheet();
+    if(k==="out"){closeSheet();auth.signOut()}
+    if(k==="exp")exportBackup();
+    if(k==="key")openKey();
+  });
+  $("impFile").addEventListener("change",importBackup);
+}
+function openKey(){
+  openSheet(`<h3>Chave da Selma</h3><div class="note">Cole a chave da API da Anthropic (começa com sk-ant-). Ela fica guardada só neste banco de dados, protegida pelo login.</div>
+  <form id="kf"><label class="f">Chave<input id="k-in" autocomplete="off" placeholder="sk-ant-..."></label>
+  <button class="btn main" type="submit">Salvar</button>${state.cfg.apiKey?`<button class="btn danger" type="button" id="kdel">Remover chave</button>`:""}<button class="btn ghost" type="button" id="kc">Cancelar</button></form>`);
+  $("kc").onclick=closeSheet;
+  if($("kdel"))$("kdel").onclick=async()=>{try{await state.db.collection("config").doc("selma").set({apiKey:""},{merge:true});closeSheet();toast("Chave removida")}catch(x){errToast()}};
+  $("kf").addEventListener("submit",async e=>{e.preventDefault();const k=$("k-in").value.trim();if(!k)return;
+    try{await state.db.collection("config").doc("selma").set({apiKey:k},{merge:true});closeSheet();toast("Selma ativada")}catch(x){errToast()}});
+}
+function exportBackup(){
+  const b={app:"controle-alugueis",versao:1,inquilinos:{},pagamentos:state.pays};
+  state.tenants.forEach(t=>{const c=Object.assign({},t);delete c.id;b.inquilinos[t.id]=c});
+  const blob=new Blob([JSON.stringify(b,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="backup-alugueis-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();a.remove();
+}
+async function importBackup(e){
+  const f=e.target.files[0];e.target.value="";if(!f)return;
+  let b;try{b=JSON.parse(await f.text())}catch(x){toast("Arquivo inválido");return}
+  if(!b||b.app!=="controle-alugueis"){toast("Esse arquivo não é um backup dos aluguéis");return}
+  const ni=Object.keys(b.inquilinos||{}).length, np=Object.keys(b.pagamentos||{}).length;
+  const sh=openSheet(`<h3>Importar backup</h3><div class="sub">${ni} unidades e ${np} meses de pagamentos.</div>
+    <div class="note">Os meses do arquivo são somados aos que já existem. Nada que já está aqui é apagado.</div>
+    <button class="btn pay" data-x="go">Importar agora</button><button class="btn ghost" data-x="close">Cancelar</button>`);
+  sh.addEventListener("click",async ev=>{const a=ev.target.closest("[data-x]");if(!a)return;
+    if(a.dataset.x==="close"){closeSheet();return}
+    a.disabled=true;a.textContent="Importando…";
+    try{
+      const writes=[];
+      Object.entries(b.inquilinos||{}).forEach(([id,d])=>writes.push(["inquilinos",id,d,false]));
+      Object.entries(b.pagamentos||{}).forEach(([id,d])=>writes.push(["pagamentos",id,d,true]));
+      for(let i=0;i<writes.length;i+=400){const bt=state.db.batch();writes.slice(i,i+400).forEach(([c,id,d,m])=>bt.set(state.db.collection(c).doc(id),d,m?{merge:true}:{}));await bt.commit();}
+      closeSheet();toast("Backup importado");
+    }catch(x){a.disabled=false;a.textContent="Importar agora";errToast()}
   });
 }
 
-/* events */
-document.getElementById("prevM").onclick=()=>{state.m--;if(state.m<0){state.m=11;state.y--}render()};
-document.getElementById("nextM").onclick=()=>{state.m++;if(state.m>11){state.m=0;state.y++}render()};
-["prio","dia","predio","unid"].forEach(v=>document.getElementById("t-"+v).onclick=()=>{state.view=v;try{localStorage.setItem("alug_view",v)}catch(e){}render()});
-document.getElementById("chips").addEventListener("click",e=>{const b=e.target.closest("[data-predio]");if(!b)return;state.predio=b.dataset.predio;try{localStorage.setItem("alug_predio",state.predio)}catch(e){}render()});
-document.querySelector(".tiles").addEventListener("click",e=>{const b=e.target.closest("[data-st]");if(!b)return;state.st=state.st===b.dataset.st?null:b.dataset.st;render()});
-document.getElementById("list").addEventListener("click",e=>{
-  const u=e.target.closest("[data-unid]");if(u){state.unid=u.dataset.unid;render();return}
-  const c=e.target.closest(".rent");if(c)openTenant(c.dataset.id);
+/* ---------- Selma ---------- */
+const chat={open:false,msgs:[],api:[],busy:false};
+function quickAnswers(){
+  const cur=CUR(), lateT=active().map(t=>({t,l:lateList(t)})).filter(x=>x.l.length).sort((a,b)=>b.l.length-a.l.length);
+  const today=now.getDate();
+  return {
+    "Quem está atrasado?":()=>lateT.length?"Estão com aluguel atrasado:\n"+lateT.map(x=>`• ${x.t.nome} (${x.t.unidade}, ${x.t.predio}): ${x.l.length} parcela${x.l.length>1?"s":""} – ${x.l.map(ymLabel).join(", ")}`).join("\n")+`\n\nTotal: ${brl(lateT.reduce((a,x)=>a+x.l.length*Number(x.t.valor||0),0))}.`:"Ninguém está atrasado. Tudo em dia!",
+    "Quanto falta receber este mês?":()=>{const a=active();let tot=0,pg=0;a.forEach(t=>{const e=entry(t,cur);if(isNA(e))return;tot+=Number(t.valor||0);if(isPaid(e))pg+=Number(t.valor||0)});return `Em ${MESES[now.getMonth()]} o total é ${brl2(tot)}. Já entrou ${brl2(pg)} e falta ${brl2(tot-pg)}.`},
+    "Quem vence esta semana?":()=>{const l=active().filter(t=>{const e=entry(t,cur);if(isPaid(e)||isNA(e))return false;const d=dueDayIn(t,now.getFullYear(),now.getMonth());return d>=today&&d<=today+7}).sort((a,b)=>a.dia-b.dia);return l.length?"Vencem nos próximos 7 dias:\n"+l.map(t=>`• Dia ${pad(t.dia)} – ${t.nome} (${t.unidade}, ${t.predio}) – ${brl(t.valor)}`).join("\n"):"Ninguém vence nos próximos 7 dias."},
+    "Quais imóveis estão vagos?":()=>{const v=state.tenants.filter(t=>t.ativo===false);return v.length?"Unidades vagas agora:\n"+v.map(t=>`• ${t.unidade} – ${t.predio} (${brl(t.valor)})`).join("\n"):"Nenhuma unidade vaga. Tudo alugado!"},
+    "Como marco um pagamento?":()=>"É fácil:\n1. Toque no nome do inquilino.\n2. Escolha como pagou (Pix, Dinheiro ou Boleto).\n3. Toque no botão verde \"Recebi o aluguel\".\n\nSe ele tinha meses atrasados, aparece uma caixa vermelha com cada mês e um botão \"Recebi\" do lado."
+  };
+}
+function renderChat(){
+  const hostC=$("chatHost");
+  if(!chat.open){hostC.innerHTML="";$("selmaBtn").hidden=!state.ready;return}
+  $("selmaBtn").hidden=true;
+  const hasKey=!!(state.cfg&&state.cfg.apiKey);
+  hostC.innerHTML=`<div class="chat"><div class="chatbox" role="dialog" aria-label="Selma">
+    <div class="chathead"><span class="av">S</span><div><b>Selma</b><small>${hasKey?"Pode me perguntar ou pedir mudanças":"Toque numa pergunta abaixo"}</small></div><button id="chatClose">Fechar</button></div>
+    <div class="msgs" id="msgs">${chat.msgs.map(m=>`<div class="msg ${m.r}">${esc(m.t)}</div>`).join("")}${chat.busy?`<div class="msg s">Pensando…</div>`:""}</div>
+    <div class="quick">${Object.keys(quickAnswers()).map(q=>`<button data-q="${esc(q)}">${esc(q)}</button>`).join("")}</div>
+    <form class="compose" id="compose"><input id="chatIn" placeholder="${hasKey?"Ex.: o Marcos pagou outubro":"Escreva aqui"}" autocomplete="off"><button type="submit">Enviar</button></form>
+  </div></div>`;
+  const ms=$("msgs");ms.scrollTop=ms.scrollHeight;
+  $("chatClose").onclick=()=>{chat.open=false;renderChat()};
+  hostC.querySelector(".quick").addEventListener("click",e=>{const b=e.target.closest("[data-q]");if(!b)return;const q=b.dataset.q;
+    chat.msgs.push({r:"u",t:q},{r:"s",t:quickAnswers()[q]()});renderChat()});
+  $("compose").addEventListener("submit",e=>{e.preventDefault();const v=$("chatIn").value.trim();if(!v||chat.busy)return;sendSelma(v)});
+}
+function snapshotForAI(){
+  const cur=CUR();
+  const lines=state.tenants.map(t=>{const s=t.ativo===false?"VAGA":(()=>{const e=entry(t,cur);return isPaid(e)?"pago":isNA(e)?e.obs:"não pago"})();
+    const l=lateList(t);return `${t.id} | ${t.nome} | ${t.predio} | ${t.unidade} | dia ${t.dia} | ${brl2(t.valor)} | ${t.ativo===false?"vaga":"alugada"} | ${MES3[now.getMonth()]}: ${s}${l.length?` | ATRASOS: ${l.join(",")}`:""}`});
+  return lines.join("\n");
+}
+const TOOLS=[
+ {name:"marcar_pagamento",description:"Marca que o inquilino pagou o aluguel de um mês.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string",description:"AAAA-MM"},forma:{type:"string",enum:["Pix","Dinheiro","Boleto","Outro"]}},required:["inquilino_id","mes"]}},
+ {name:"desfazer_pagamento",description:"Volta um mês para 'não pago' (remove pagamento ou observação).",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string"}},required:["inquilino_id","mes"]}},
+ {name:"marcar_sem_cobranca",description:"Marca um mês como sem cobrança (ex.: vago, acordo, calção).",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string"},motivo:{type:"string"}},required:["inquilino_id","mes","motivo"]}},
+ {name:"editar_inquilino",description:"Altera dados de uma unidade/inquilino: nome, dia de vencimento, valor, unidade ou endereço.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},nome:{type:"string"},dia:{type:"integer"},valor:{type:"number"},unidade:{type:"string"},predio:{type:"string"}},required:["inquilino_id"]}},
+ {name:"desocupar_unidade",description:"Registra que o inquilino saiu e a unidade ficou vaga.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"}},required:["inquilino_id"]}},
+ {name:"alugar_unidade",description:"Aluga uma unidade vaga para um novo inquilino.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},nome:{type:"string"},dia:{type:"integer"},valor:{type:"number"}},required:["inquilino_id","nome"]}},
+ {name:"adicionar_unidade",description:"Cadastra uma unidade nova.",input_schema:{type:"object",properties:{predio:{type:"string"},unidade:{type:"string"},nome:{type:"string"},dia:{type:"integer"},valor:{type:"number"}},required:["predio","unidade","nome","dia","valor"]}},
+ {name:"ver_historico",description:"Mostra o histórico de todos os meses de uma unidade.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"}},required:["inquilino_id"]}},
+ {name:"indice_imoveis",description:"Retorna o índice de liquidez de locação de cada imóvel.",input_schema:{type:"object",properties:{}}}
+];
+async function runTool(name,inp){
+  const t=inp.inquilino_id?findT(inp.inquilino_id):null;
+  if(inp.inquilino_id&&!t) return "Erro: inquilino_id não existe.";
+  switch(name){
+    case "marcar_pagamento": await ops.pay(t.id,inp.mes,inp.forma||"Pix"); return `Ok: ${t.nome} ${inp.mes} pago.`;
+    case "desfazer_pagamento": await ops.clear(t.id,inp.mes); return `Ok: ${t.nome} ${inp.mes} voltou para não pago.`;
+    case "marcar_sem_cobranca": await ops.noCharge(t.id,inp.mes,inp.motivo); return `Ok.`;
+    case "editar_inquilino": {const f=Object.assign({},inp);delete f.inquilino_id;await ops.edit(t.id,f);return "Ok: dados alterados.";}
+    case "desocupar_unidade": await ops.vacate(t.id); return "Ok: unidade vaga.";
+    case "alugar_unidade": await ops.rent(t.id,inp); return "Ok: unidade alugada.";
+    case "adicionar_unidade": {const id=await ops.add(inp);return "Ok: criada com id "+id;}
+    case "ver_historico": return Object.keys(state.pays).sort().map(s=>{const e=entry(t,s);return s+": "+(isPaid(e)?"pago":isNA(e)?e.obs:(s<startOf(t)?"(antes do controle)":"não pago"))}).join("\n");
+    case "indice_imoveis": return computeIndex().res.map(r=>`${r.t.unidade} ${r.t.predio}: ${r.score}% alugado, ${r.vac} meses vago em ${r.ep} vezes, pagou ${Math.round(r.payP*100)}%`).join("\n");
+  }
+  return "Ferramenta desconhecida.";
+}
+async function sendSelma(text){
+  chat.msgs.push({r:"u",t:text});
+  const key=state.cfg&&state.cfg.apiKey;
+  if(!key){
+    const qa=quickAnswers(), k=Object.keys(qa).find(q=>q.toLowerCase().replace(/[?]/g,"").split(" ").filter(w=>w.length>3).some(w=>text.toLowerCase().includes(w)));
+    chat.msgs.push({r:"s",t:k?qa[k]():"Ainda não consigo entender mensagens escritas. Toque numa das perguntas logo acima da caixa de texto, ou peça ao Leo para me ativar em \"Dados e conta\"."});
+    renderChat();return;
+  }
+  chat.api.push({role:"user",content:text});
+  chat.busy=true;renderChat();
+  const sys=`Você é a Selma, assistente do app de controle de aluguéis de um senhor de mais idade. Fale português do Brasil, com frases curtas, claras e gentis, sem termos técnicos. Hoje é ${now.toLocaleDateString("pt-BR")} (mês atual ${CUR()}). O app mostra o total a receber do mês, quem pagou, quem está a pagar e quem está atrasado; parcelas em atraso contam a partir de ${LATE_START}. Use as ferramentas para mudar dados. Para marcar pagamento quando o pedido for claro, faça direto. Antes de desocupar unidade, apagar ou mudar valor/endereço, confirme com a pessoa. Se houver mais de um inquilino com o mesmo nome, pergunte qual unidade. Depois de mudar algo, diga em uma frase o que foi feito.\n\nDados atuais (id | nome | endereço | unidade | vencimento | valor | situação | mês atual | atrasos):\n${snapshotForAI()}`;
+  try{
+    for(let round=0;round<6;round++){
+      const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+        body:JSON.stringify({model:"claude-sonnet-5-5",max_tokens:1024,system:sys,tools:TOOLS,messages:chat.api})});
+      const j=await r.json();
+      if(!r.ok) throw new Error(j&&j.error&&j.error.message||"erro");
+      chat.api.push({role:"assistant",content:j.content});
+      const txt=j.content.filter(c=>c.type==="text").map(c=>c.text).join("\n").trim();
+      if(txt) chat.msgs.push({r:"s",t:txt});
+      const uses=j.content.filter(c=>c.type==="tool_use");
+      if(!uses.length||j.stop_reason!=="tool_use") break;
+      const results=[];
+      for(const u of uses){let out;try{out=await runTool(u.name,u.input||{})}catch(x){out="Erro: "+x.message}
+        results.push({type:"tool_result",tool_use_id:u.id,content:String(out)});
+        if(/^Ok/.test(out)) chat.msgs.push({r:"sys",t:"✓ "+out.replace(/^Ok:?\s*/,"")});}
+      chat.api.push({role:"user",content:results});
+      renderChat();
+    }
+  }catch(x){chat.msgs.push({r:"s",t:"Não consegui responder agora. Confira a internet ou a chave da Selma e tente de novo."});chat.api=[];}
+  if(chat.api.length>30) chat.api=[];
+  chat.busy=false;renderChat();
+}
+
+/* ---------- eventos ---------- */
+$("prevM").onclick=()=>{state.m--;if(state.m<0){state.m=11;state.y--}render()};
+$("nextM").onclick=()=>{state.m++;if(state.m>11){state.m=0;state.y++}render()};
+document.querySelector(".tiles").addEventListener("click",e=>{const b=e.target.closest("[data-st]");if(!b)return;state.st=state.st===b.dataset.st?null:b.dataset.st;state.view="prazo";render()});
+document.querySelector(".menu").addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(!b)return;state.view=b.dataset.view;state.st=null;state.endSel=null;lsSet("al_view",state.view);render();window.scrollTo({top:document.querySelector(".menu").offsetTop-10,behavior:"smooth"})});
+$("alert").onclick=()=>{state.view="inq";state.inqTab="late";render();window.scrollTo({top:document.querySelector(".menu").offsetTop-10,behavior:"smooth"})};
+$("sortSel").onchange=e=>{state.sort=e.target.value;lsSet("al_sort",state.sort);render()};
+$("idxLink").onclick=()=>{state.view="idx";render();window.scrollTo({top:document.querySelector(".menu").offsetTop-10,behavior:"smooth"})};
+$("acctLink").onclick=openAccount;
+$("selmaBtn").onclick=()=>{chat.open=true;if(!chat.msgs.length)chat.msgs.push({r:"s",t:"Olá! Eu sou a Selma. Posso dizer quem está atrasado, quanto falta receber e ajudar a atualizar o app. Toque numa pergunta abaixo."+((state.cfg&&state.cfg.apiKey)?" Ou escreva o que precisa, por exemplo: \"a Julia pagou outubro\".":"")});renderChat()};
+const L=$("list");
+L.addEventListener("click",e=>{
+  const a=e.target.closest("[data-act]");
+  if(a){const k=a.dataset.act;
+    if(k==="endback"){state.endSel=null;render();return}
+    if(k==="idxall"){state.idxAll=true;render();return}
+    if(k==="idxback"){state.view=lsGet("al_view","prazo");if(state.view==="idx")state.view="prazo";render();return}
+    if(k==="addunit"){openForm(null,a.dataset.predio);return}
+    if(k==="renend"){openRename(a.dataset.predio);return}
+  }
+  const inq=e.target.closest("[data-inq]"); if(inq){state.inqTab=inq.dataset.inq;render();return}
+  const en=e.target.closest("[data-end]"); if(en){state.endSel=en.dataset.end;state.endTab="todas";render();window.scrollTo({top:document.querySelector(".menu").offsetTop-10,behavior:"smooth"});return}
+  const et=e.target.closest("[data-endtab]"); if(et){state.endTab=et.dataset.endtab;render();return}
+  const c=e.target.closest(".card"); if(c) openTenant(c.dataset.id);
 });
-document.getElementById("addBtn").onclick=()=>{if(!state.db){toast("Entre na sua conta para cadastrar");return}openForm(null)};
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+L.addEventListener("input",e=>{if(e.target.id==="qInput"){state.q=e.target.value;const pos=e.target.selectionStart;render();const i=$("qInput");if(i){i.focus();try{i.setSelectionRange(pos,pos)}catch(x){}}}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();if(chat.open){chat.open=false;renderChat()}}});
+/* virada do dia / mês com o app aberto */
+setInterval(()=>{const n=new Date();if(n.getDate()!==now.getDate()){const wasCur=state.y===now.getFullYear()&&state.m===now.getMonth();now=n;if(wasCur){state.y=n.getFullYear();state.m=n.getMonth()}render()}},60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){const n=new Date();if(n.toDateString()!==now.toDateString()){const wasCur=state.y===now.getFullYear()&&state.m===now.getMonth();now=n;if(wasCur){state.y=n.getFullYear();state.m=n.getMonth()}render()}}});
 
 render();
 
-/* data */
-function toastErr(){toast("Não salvou. Confira a internet e tente de novo.")}
+/* ---------- Firebase ---------- */
 firebase.initializeApp(firebaseConfig);
 const fdb=firebase.firestore();
 try{fdb.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
 const auth=firebase.auth();
 let unsubs=[];
-const loginEl=document.getElementById("login"), toolsEl=document.getElementById("tools");
 auth.onAuthStateChanged(user=>{
   unsubs.forEach(u=>u());unsubs=[];
-  if(!user){loginEl.hidden=false;toolsEl.hidden=true;state.db=null;state.ready=false;state.tenants=[];state.pays={};render();return}
-  loginEl.hidden=true;toolsEl.hidden=false;state.db=fdb;
+  if(!user){$("login").hidden=false;state.db=null;state.ready=false;state.tenants=[];state.pays={};chat.open=false;renderChat();render();return}
+  $("login").hidden=true;state.db=fdb;
   let gotT=false,gotP=false;
-  unsubs.push(fdb.collection("inquilinos").onSnapshot(s=>{
-    state.tenants=s.docs.map(d=>Object.assign({id:d.id},d.data()));
-    gotT=true;if(gotP)state.ready=true;render();
-  },e=>{state.ready=true;render();toast("Sem permissão para ler os dados. Confira as regras do Firestore.")}));
-  unsubs.push(fdb.collection("pagamentos").onSnapshot(s=>{
-    const m={};s.docs.forEach(d=>m[d.id]=d.data());state.pays=m;
-    gotP=true;if(gotT)state.ready=true;render();
-  },()=>{gotP=true;if(gotT)state.ready=true;render()}));
+  const ready=()=>{if(gotT&&gotP){state.ready=true}render();renderChat()};
+  unsubs.push(fdb.collection("inquilinos").onSnapshot(s=>{state.tenants=s.docs.map(d=>Object.assign({id:d.id},d.data()));gotT=true;ready()},
+    ()=>{gotT=true;ready();toast("Sem permissão para ler os dados. Confira as regras do Firestore.")}));
+  unsubs.push(fdb.collection("pagamentos").onSnapshot(s=>{const m={};s.docs.forEach(d=>m[d.id]=d.data());state.pays=m;gotP=true;ready()},()=>{gotP=true;ready()}));
+  unsubs.push(fdb.collection("config").doc("selma").onSnapshot(d=>{state.cfg=d.exists?d.data():{};if(chat.open)renderChat()},()=>{}));
 });
-document.getElementById("loginForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const err=document.getElementById("lErr"),btn=document.getElementById("lBtn");
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();const err=$("lErr"),btn=$("lBtn");
   err.hidden=true;btn.disabled=true;btn.textContent="Entrando…";
-  try{await auth.signInWithEmailAndPassword(document.getElementById("lEmail").value.trim(),document.getElementById("lPass").value)}
+  try{await auth.signInWithEmailAndPassword($("lEmail").value.trim(),$("lPass").value)}
   catch(x){err.textContent="E-mail ou senha incorretos.";err.hidden=false}
   btn.disabled=false;btn.textContent="Entrar";
 });
-document.getElementById("outBtn").onclick=()=>auth.signOut();
-document.getElementById("expBtn").onclick=()=>{
-  const b={app:"controle-alugueis",versao:1,inquilinos:{},pagamentos:state.pays};
-  state.tenants.forEach(t=>{const c=Object.assign({},t);delete c.id;b.inquilinos[t.id]=c});
-  const blob=new Blob([JSON.stringify(b,null,1)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
-  a.download="backup-alugueis-"+new Date().toISOString().slice(0,10)+".json";
-  document.body.appendChild(a);a.click();a.remove();
-};
-document.getElementById("impFile").addEventListener("change",async e=>{
-  const f=e.target.files[0];e.target.value="";if(!f)return;
-  let b;try{b=JSON.parse(await f.text())}catch(x){toast("Arquivo inválido");return}
-  if(!b||b.app!=="controle-alugueis"){toast("Esse arquivo não é um backup dos aluguéis");return}
-  const ni=Object.keys(b.inquilinos||{}).length, np=Object.keys(b.pagamentos||{}).length;
-  openSheet(`<h3>Importar backup</h3><div class="sub">${ni} unidades e ${np} meses de pagamentos.</div>
-    <div class="note">Os dados do arquivo substituem os que tiverem o mesmo nome aqui. O resto continua igual.</div>
-    <button class="btn pay" data-act="go">Importar agora</button><button class="btn ghost" data-act="close">Cancelar</button>`);
-  host.querySelector(".sheet").addEventListener("click",async ev=>{
-    const a=ev.target.closest("[data-act]");if(!a)return;
-    if(a.dataset.act==="close"){closeSheet();return}
-    a.disabled=true;a.textContent="Importando…";
-    try{
-      const batch=fdb.batch();
-      Object.entries(b.inquilinos||{}).forEach(([id,d])=>batch.set(fdb.collection("inquilinos").doc(id),d));
-      Object.entries(b.pagamentos||{}).forEach(([id,d])=>batch.set(fdb.collection("pagamentos").doc(id),d,{merge:true}));
-      await batch.commit();closeSheet();toast("Backup importado");
-    }catch(x){a.disabled=false;a.textContent="Importar agora";toastErr()}
-  });
-});
 })();
 </script>
-
 </body>
 </html>
