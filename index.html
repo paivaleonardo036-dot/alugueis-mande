@@ -65,16 +65,19 @@ svg{flex:none}
 .bar{display:flex;height:12px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
 .bar i{display:block;height:100%;transition:width .4s}
 .b-paid{background:#7ef0b0}.b-open{background:#8cc2ff}.b-late{background:#ff8a73}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.tile{border:0;border-radius:16px;padding:11px 10px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0;outline:3px solid transparent;outline-offset:-3px}
-.tile small{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
-.tile strong{font-family:var(--display);font-weight:800;font-size:1.02rem;line-height:1.15}
-.tile span{font-size:.82rem;font-weight:700;opacity:.9}
+.tiles{display:flex;flex-direction:column;gap:10px}
+.tile{border:0;border-radius:18px;padding:16px 16px;text-align:left;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-width:0;outline:4px solid transparent;outline-offset:-4px;min-height:84px}
+.tile .tic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}
+.tile.paid .tic{background:var(--paid)}.tile.open .tic{background:var(--cold)}.tile.late .tic{background:var(--late)}
+.tile small{display:block;font-size:1.2rem;font-weight:800;font-family:var(--display);line-height:1.1}
+.tile span{display:block;font-size:.95rem;font-weight:700;opacity:.9;margin-top:2px}
+.tile strong{font-family:var(--display);font-weight:800;font-size:1.45rem;line-height:1.1;text-align:right;white-space:nowrap}
+.tile .arr{font-size:1.3rem;opacity:.6;margin-left:-6px}
 .tile.paid{background:var(--paid-bg);color:var(--paid)}
 .tile.open{background:var(--cold-bg);color:var(--cold)}
 .tile.late{background:var(--late-bg);color:var(--late)}
 .tile[aria-pressed="true"]{outline-color:var(--navy-ink)}
-@media (max-width:370px){.tile strong{font-size:.95rem}.tile small{font-size:.7rem}}
+@media (max-width:370px){.tile strong{font-size:1.2rem}.tile{gap:10px;padding:14px 12px}.tile .tic{width:38px;height:38px}}
 
 /* alerta */
 .alert{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2px solid var(--late);background:var(--late-bg);color:var(--fg);border-radius:18px;padding:14px}
@@ -84,8 +87,8 @@ svg{flex:none}
 .alert .go{margin-left:auto;font-weight:800;color:var(--late);white-space:nowrap}
 
 /* menu principal */
-.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.menu button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:.92rem;line-height:1.15;text-align:center;min-height:92px;justify-content:center}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu button{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:12px 10px;display:flex;flex-direction:row;align-items:center;gap:10px;font-weight:800;font-size:1rem;line-height:1.15;text-align:left;min-height:68px}
 .menu button svg{color:var(--navy)}
 .menu button[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:var(--navy-ink)}
 .menu button[aria-pressed="true"] svg{color:var(--navy-ink)}
@@ -165,6 +168,33 @@ svg{flex:none}
 .meter{grid-column:1/-1;height:8px;border-radius:99px;background:var(--gray-bg);overflow:hidden}
 .meter i{display:block;height:100%;border-radius:99px}
 
+/* saldo e parcial */
+.saldo{display:inline-block;margin-top:4px;background:var(--late);color:#fff;font-weight:800;font-size:.85rem;padding:3px 9px;border-radius:8px}
+.m-part{background:var(--hot-bg);color:var(--hot)}
+.ln .bt{display:flex;gap:6px}
+.ln .bt button.part{background:var(--hot)}
+.partbox{border:2px solid var(--hot);background:var(--hot-bg);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+/* planilha */
+.ptools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ptools .yr{display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px}
+.ptools .yr button{border:0;background:transparent;width:40px;height:40px;border-radius:50%;font-size:1.3rem;font-weight:800}
+.ptools .yr span{font-weight:800;min-width:56px;text-align:center}
+.tblwrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;-webkit-overflow-scrolling:touch}
+table.pl{border-collapse:separate;border-spacing:0;font-size:.9rem;min-width:100%}
+table.pl th,table.pl td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.pl thead th{background:var(--navy);color:var(--navy-ink);font-weight:800;position:sticky;top:0;z-index:2}
+table.pl .st{position:sticky;left:0;background:var(--card);text-align:left;z-index:1;border-right:1px solid var(--line);max-width:150px;overflow:hidden;text-overflow:ellipsis}
+table.pl thead .st{background:var(--navy);z-index:3}
+table.pl .st b{display:block;font-size:.92rem}
+table.pl .st small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+table.pl tr.grp td{background:var(--navy-soft);color:var(--navy);font-weight:800;text-align:left}
+table.pl tr.grp td.st{background:var(--navy-soft)}
+table.pl tfoot td{font-weight:800;background:var(--bg)}
+table.pl tfoot td.st{background:var(--bg)}
+.c-ok{color:var(--paid);font-weight:800}.c-part{color:var(--hot);font-weight:800}.c-late{color:var(--late);font-weight:800}
+.c-open{color:var(--cold);font-weight:700}.c-na{color:var(--gray);font-size:.78rem;font-weight:700}
+td.cl{cursor:pointer}
+.c-saldo{color:var(--late);font-weight:800}
 .empty{background:var(--card);border:2px dashed var(--line);border-radius:18px;padding:22px;text-align:center;color:var(--muted);font-weight:700}
 .foot{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:10px}
 .link{border:0;background:transparent;color:var(--muted);font-weight:700;text-decoration:underline;text-underline-offset:3px;padding:8px}
@@ -257,9 +287,9 @@ label.f input,label.f select{background:var(--bg);border:2px solid var(--line);b
     </div>
     <div class="bar"><i class="b-paid" id="bPaid"></i><i class="b-open" id="bOpen"></i><i class="b-late" id="bLate"></i></div>
     <div class="tiles">
-      <button class="tile paid" data-st="paid" aria-pressed="false"><small>Pago</small><strong class="num" id="vPaid">R$ 0</strong><span class="num" id="nPaid">0 inquilinos</span></button>
-      <button class="tile open" data-st="open" aria-pressed="false"><small>A pagar</small><strong class="num" id="vOpen">R$ 0</strong><span class="num" id="nOpen">0 inquilinos</span></button>
-      <button class="tile late" data-st="late" aria-pressed="false"><small>Atrasado</small><strong class="num" id="vLate">R$ 0</strong><span class="num" id="nLate">0 inquilinos</span></button>
+      <button class="tile paid" data-st="paid" aria-pressed="false"><span class="tic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><small>Pago</small><span class="num" id="nPaid">0 inquilinos</span></span><strong class="num" id="vPaid">R$ 0</strong></button>
+      <button class="tile open" data-st="open" aria-pressed="false"><span class="tic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span><span><small>A pagar</small><span class="num" id="nOpen">0 inquilinos</span></span><strong class="num" id="vOpen">R$ 0</strong></button>
+      <button class="tile late" data-st="late" aria-pressed="false"><span class="tic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 6.5v7M12 17.5h.01"/></svg></span><span><small>Atrasado</small><span class="num" id="nLate">0 inquilinos</span></span><strong class="num" id="vLate">R$ 0</strong></button>
     </div>
   </section>
 
@@ -279,6 +309,9 @@ label.f input,label.f select{background:var(--bg);border:2px solid var(--line);b
     <button data-view="end" aria-pressed="false">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6M9 11h.01M15 11h.01"/></svg>
       Endereços</button>
+    <button data-view="plan" aria-pressed="false">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 15h18M9 4v16"/></svg>
+      PLANILHA</button>
   </nav>
 
   <div class="bar2" id="sortBar">
@@ -363,24 +396,34 @@ const isPaid=e=>!!(e&&e.forma);
 const isNA=e=>!!(e&&e.obs);
 function startOf(t){return t.desde&&t.desde>LATE_START?t.desde:LATE_START}
 
-/* parcelas em atraso de um inquilino (todas, até hoje) */
-function lateList(t){
+/* quanto foi pago e quanto falta numa parcela */
+const remainder=e=>(e&&e.forma&&e.devido!=null)?Math.max(0,Number(e.devido)-Number(e.valor||0)):0;
+const paidAmt=(e,t)=>isPaid(e)?(e.devido!=null||e.valor!=null?Number(e.valor||0):Number(t.valor||0)):0;
+/* débitos do inquilino até hoje: meses não pagos (vencidos) e restos de pagamentos parciais */
+function debtList(t){
   if(t.ativo===false) return [];
   const out=[], cur=CUR(), today=now.getDate();
   for(let s=startOf(t); s<=cur; s=ymAdd(s,1)){
     const e=entry(t,s);
-    if(isPaid(e)||isNA(e)) continue;
-    if(s<cur){out.push(s);continue}
+    if(isNA(e)) continue;
+    if(isPaid(e)){const r=remainder(e); if(r>0.009) out.push({ym:s,falta:r,parcial:true,pago:Number(e.valor||0)}); continue;}
     const p=ymParts(s);
-    if(dueDayIn(t,p.y,p.m)<today) out.push(s);
+    if(s<cur||dueDayIn(t,p.y,p.m)<today) out.push({ym:s,falta:Number(t.valor||0),parcial:false});
   }
   return out;
 }
+const lateList=t=>debtList(t).map(d=>d.ym);
+const saldo=t=>debtList(t).reduce((a,d)=>a+d.falta,0);
 /* situação no mês escolhido */
 function status(t){
   const e=entry(t,ym());
-  if(isPaid(e)) return {k:"paid",temp:"paid",label:"Pago"+(e.parcial?" (parcial)":"")+" · "+e.forma,e};
+  if(isPaid(e)&&!(remainder(e)>0.009)) return {k:"paid",temp:"paid",label:"Pago · "+e.forma,e};
   if(isNA(e)) return {k:"na",temp:"na",label:e.obs,e};
+  const base=statusUnpaid(t,e);
+  if(isPaid(e)){const r=remainder(e);base.part=true;base.pago=Number(e.valor||0);base.falta=r;base.label="Pagou "+brl(e.valor)+" · falta "+brl(r);base.e=e}
+  return base;
+}
+function statusUnpaid(t,e){
   const sel=ym(), cur=CUR(), d=dueDay(t);
   if(sel<cur){
     if(sel<startOf(t)) return e&&e.nao?{k:"late",temp:"late",label:"Não pago"}:{k:"na",temp:"na",label:"Sem registro"};
@@ -403,7 +446,7 @@ function sorter(){
   if(s==="nome") return (a,b)=>String(a.nome).localeCompare(String(b.nome),"pt-BR");
   if(s==="end") return (a,b)=>String(a.predio).localeCompare(String(b.predio),"pt-BR",{numeric:true})||unitCmp(a,b);
   if(s==="valor") return (a,b)=>Number(b.valor||0)-Number(a.valor||0);
-  if(s==="atraso") return (a,b)=>lateList(b).length-lateList(a).length||dueDay(a)-dueDay(b);
+  if(s==="atraso") return (a,b)=>saldo(b)-saldo(a)||dueDay(a)-dueDay(b);
   return (a,b)=>dueDay(a)-dueDay(b)||String(a.nome).localeCompare(String(b.nome),"pt-BR");
 }
 
@@ -411,8 +454,8 @@ function sorter(){
 const $=id=>document.getElementById(id);
 function thermo(temp){const lv=TEMP_LEVEL[temp]||0;return `<span class="thermo" aria-hidden="true">${[1,2,3,4,5].map(i=>`<i class="${i<=lv?"on":""}"></i>`).join("")}</span>`}
 function tenantCard(t,opts={}){
-  const s=status(t), d=dueDay(t), late=lateList(t);
-  const debt=(opts.showDebt&&late.length)?`<span class="debt">${late.length} parcela${late.length>1?"s":""} em atraso · ${brl(late.length*Number(t.valor||0))}</span>`:"";
+  const s=status(t), d=dueDay(t), dl=debtList(t), sd=dl.reduce((a,x)=>a+x.falta,0);
+  const debt=sd>0.009?`<span class="saldo">Saldo devedor ${brl(sd)}</span>${opts.showDebt?`<span class="debt">${dl.length} parcela${dl.length>1?"s":""} em aberto</span>`:""}`:"";
   return `<button class="card t-${s.temp}" data-id="${esc(t.id)}">
     <div class="day"><small>DIA</small><span class="num">${pad(d)}</span></div>
     <div class="who"><strong>${esc(t.nome||"Sem nome")}</strong><em>${esc(t.unidade||"")} · ${esc(t.predio||"")}</em>${opts.thermo?thermo(s.temp):""}${debt}</div>
@@ -442,7 +485,12 @@ function renderHeader(){
   $("mLabel").textContent=MES3[state.m]+" "+state.y;
   const all=active();
   const sum={paid:[0,0],open:[0,0],late:[0,0]};
-  all.forEach(t=>{const k=status(t).k;if(sum[k]){sum[k][0]+=Number(t.valor||0);sum[k][1]++}});
+  let paidV=0;
+  all.forEach(t=>{const s=status(t);if(s.k==="na")return;
+    if(s.k==="paid"){paidV+=paidAmt(s.e,t);sum.paid[1]++;return}
+    if(s.part){paidV+=s.pago;sum[s.k][0]+=s.falta;sum[s.k][1]++;return}
+    sum[s.k][0]+=Number(t.valor||0);sum[s.k][1]++});
+  sum.paid[0]=paidV;
   const total=sum.paid[0]+sum.open[0]+sum.late[0];
   $("sLbl").textContent="Total a receber em "+MESES[state.m];
   $("sTot").textContent=brl2(total);
@@ -453,13 +501,13 @@ function renderHeader(){
   [["paid","Paid"],["open","Open"],["late","Late"]].forEach(([k,K])=>{$("v"+K).textContent=brlS(sum[k][0]);$("n"+K).textContent=qt(sum[k][1])});
   document.querySelectorAll(".tile").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.st===state.st)));
   /* alerta geral de atrasos (sempre até hoje) */
-  const lateT=active().map(t=>({t,l:lateList(t)})).filter(x=>x.l.length);
-  const parc=lateT.reduce((a,x)=>a+x.l.length,0), val=lateT.reduce((a,x)=>a+x.l.length*Number(x.t.valor||0),0);
+  const lateT=active().map(t=>({t,l:debtList(t)})).filter(x=>x.l.length);
+  const parc=lateT.reduce((a,x)=>a+x.l.length,0), val=lateT.reduce((a,x)=>a+x.l.reduce((b,d)=>b+d.falta,0),0);
   $("alert").hidden=!state.ready||!lateT.length;
   $("alT").textContent=lateT.length+(lateT.length===1?" inquilino atrasado":" inquilinos atrasados");
-  $("alS").textContent=parc+(parc===1?" parcela":" parcelas")+" em atraso · "+brl(val);
+  $("alS").textContent=parc+(parc===1?" parcela":" parcelas")+" em aberto · saldo devedor "+brl(val);
   document.querySelectorAll(".menu [data-view]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===state.view)));
-  $("sortBar").hidden=state.view==="idx"||(state.view==="end"&&!state.endSel);
+  $("sortBar").hidden=state.view==="idx"||state.view==="plan"||(state.view==="end"&&!state.endSel);
   $("sortSel").value=state.sort;
 }
 
@@ -471,6 +519,7 @@ function render(){
   if(state.view==="inq") L.innerHTML=viewInq();
   else if(state.view==="end") L.innerHTML=viewEnd();
   else if(state.view==="idx") L.innerHTML=viewIdx();
+  else if(state.view==="plan") L.innerHTML=viewPlan();
   else L.innerHTML=viewPrazo();
 }
 
@@ -478,6 +527,7 @@ function viewPrazo(){
   let items=active(); const srt=sorter();
   if(state.st) items=items.filter(t=>status(t).k===state.st);
   const g={late:[],hot:[],warm:[],cold:[],paid:[],na:[]};
+  /* pagamento parcial aparece no grupo pelo prazo */
   items.forEach(t=>g[status(t).temp].push(t));
   Object.values(g).forEach(a=>a.sort(srt));
   const r=t=>tenantCard(t,{thermo:true});
@@ -488,12 +538,12 @@ function viewPrazo(){
 }
 
 function viewInq(){
-  const all=active().map(t=>({t,l:lateList(t)}));
+  const all=active().map(t=>({t,l:debtList(t)}));
   const late=all.filter(x=>x.l.length), ok=all.filter(x=>!x.l.length);
-  const parc=late.reduce((a,x)=>a+x.l.length,0);
+  const parc=late.reduce((a,x)=>a+x.l.length,0), sdT=late.reduce((a,x)=>a+x.l.reduce((b,d)=>b+d.falta,0),0);
   let h=`<div class="seg">
     <button class="ok" data-inq="ok" aria-pressed="${state.inqTab==="ok"}"><small>Em dia</small><strong class="num">${ok.length}</strong><span>sem parcelas atrasadas</span></button>
-    <button class="bad" data-inq="late" aria-pressed="${state.inqTab==="late"}"><small>Atrasados</small><strong class="num">${late.length}</strong><span class="num">${parc} parcela${parc===1?"":"s"} em atraso</span></button>
+    <button class="bad" data-inq="late" aria-pressed="${state.inqTab==="late"}"><small>Atrasados</small><strong class="num">${late.length}</strong><span class="num">saldo ${brl(sdT)}</span></button>
   </div>
   <input class="search" id="qInput" type="search" placeholder="Buscar inquilino pelo nome" value="${esc(state.q)}" autocomplete="off">`;
   let list=(state.inqTab==="ok"?ok:late).map(x=>x.t);
@@ -513,7 +563,7 @@ function viewEnd(){
     const u=state.tenants.filter(t=>t.predio===p), on=u.filter(t=>t.ativo!==false), vac=u.length-on.length;
     const st=on.map(status), paid=st.filter(s=>s.k==="paid").length, late=on.filter(t=>lateList(t).length).length;
     const tot=on.reduce((a,t)=>a+Number(t.valor||0),0);
-    const rec=on.filter(t=>status(t).k==="paid").reduce((a,t)=>a+Number(t.valor||0),0);
+    const rec=on.reduce((a,t)=>{const s=status(t);return a+(s.k==="paid"?paidAmt(s.e,t):s.part?s.pago:0)},0);
     h+=`<button class="addr" data-end="${esc(p)}">
       <h3>${esc(p)}<span>›</span></h3>
       <div class="facts"><span class="chip">${u.length} unidade${u.length>1?"s":""}</span><span class="chip ok">${on.length} alugada${on.length>1?"s":""}</span>${vac?`<span class="chip vac">${vac} vaga${vac>1?"s":""}</span>`:""}${late?`<span class="chip bad">${late} atrasado${late>1?"s":""}</span>`:""}</div>
@@ -540,27 +590,82 @@ function viewEndOne(p){
   <div class="row2"><button class="btn ghost" data-act="addunit" data-predio="${esc(p)}">+ Adicionar unidade</button><button class="btn ghost" data-act="renend" data-predio="${esc(p)}">Renomear endereço</button></div>`;
 }
 
+/* ---------- planilha ---------- */
+function cellInfo(t,s){
+  const e=entry(t,s), cur=CUR(), p=ymParts(s);
+  if(isPaid(e)){const r=remainder(e);const prev=Number(e.devido||e.valor||t.valor||0);
+    return r>0.009?{c:"c-part",txt:brl(e.valor),tip:"pagou parte",prev,rec:Number(e.valor||0)}:{c:"c-ok",txt:"✓",tip:"pago",prev,rec:paidAmt(e,t)}}
+  if(isNA(e)) return {c:"c-na",txt:/desoc|vago|saiu/i.test(e.obs)?"vago":/sem registro/i.test(e.obs)?"":"s/ cob.",prev:0,rec:0};
+  if(s>cur) return {c:"",txt:"",prev:t.ativo===false?0:Number(t.valor||0),rec:0,fut:true};
+  if(t.ativo===false&&s>=CUR()) return {c:"c-na",txt:"vago",prev:0,rec:0};
+  if(s<startOf(t)&&!(e&&e.nao)) return {c:"c-na",txt:"",prev:0,rec:0};
+  const late=s<cur||dueDayIn(t,p.y,p.m)<now.getDate();
+  return late?{c:"c-late",txt:"✗",tip:"não pago",prev:Number(t.valor||0),rec:0}:{c:"c-open",txt:"a pagar",prev:Number(t.valor||0),rec:0};
+}
+function viewPlan(){
+  const yr=state.pYear||state.y, ms=MES3.map((n,i)=>ymOf(yr,i));
+  const ps=predios();
+  const totPrev=ms.map(()=>0), totRec=ms.map(()=>0);
+  let body="";
+  ps.forEach(p=>{
+    const u=state.tenants.filter(t=>t.predio===p).sort(unitCmp);
+    body+=`<tr class="grp"><td class="st">${esc(p)}</td><td colspan="${ms.length+2}"></td></tr>`;
+    u.forEach(t=>{
+      const cells=ms.map((s,i)=>{const c=cellInfo(t,s);totPrev[i]+=c.prev;totRec[i]+=c.rec;return `<td class="cl ${c.c}" data-id="${esc(t.id)}" title="${esc(c.tip||"")}">${c.txt}</td>`}).join("");
+      const sd=saldo(t);
+      body+=`<tr><td class="st cl" data-id="${esc(t.id)}"><b>${esc(t.ativo===false?"Vaga":t.nome)}</b><small>${esc(t.unidade||"—")} · dia ${pad(t.dia)}</small></td><td>${brl(t.valor)}</td>${cells}<td class="${sd>0.009?"c-saldo":""}">${sd>0.009?brl(sd):"—"}</td></tr>`;
+    });
+  });
+  const allSd=active().reduce((a,t)=>a+saldo(t),0);
+  const foot=`<tfoot>
+    <tr><td class="st">Previsto</td><td></td>${totPrev.map(v=>`<td>${v?brl(v):""}</td>`).join("")}<td></td></tr>
+    <tr><td class="st">Recebido</td><td></td>${totRec.map(v=>`<td class="c-ok">${v?brl(v):""}</td>`).join("")}<td></td></tr>
+    <tr><td class="st">Faltou</td><td></td>${ms.map((s,i)=>{const f=totPrev[i]-totRec[i];return `<td class="${f>0.009&&s<=CUR()?"c-late":""}">${s<=CUR()&&f>0.009?brl(f):""}</td>`}).join("")}<td class="c-saldo">${brl(allSd)}</td></tr></tfoot>`;
+  const resumo=ms.filter(s=>s<=CUR()).map(s=>{const i=ymParts(s).m;const f=totPrev[i]-totRec[i];const pc=totPrev[i]?Math.round(totRec[i]/totPrev[i]*100):0;
+    return `<tr><td class="st"><b>${MESES[i]}</b></td><td>${brl2(totPrev[i])}</td><td class="c-ok">${brl2(totRec[i])}</td><td class="${f>0.009?"c-late":""}">${f>0.009?brl2(f):"—"}</td><td>${pc}%</td></tr>`}).join("");
+  const anoPrev=totPrev.reduce((a,b,i)=>a+(ms[i]<=CUR()?b:0),0), anoRec=totRec.reduce((a,b)=>a+b,0);
+  return `<h2 class="pagetitle">Planilha</h2>
+  <div class="ptools"><div class="yr"><button data-act="pyear" data-d="-1" aria-label="Ano anterior">‹</button><span class="num">${yr}</span><button data-act="pyear" data-d="1" aria-label="Próximo ano">›</button></div>
+  <button class="btn main" data-act="csv" style="flex:1;min-width:170px;padding:13px">Baixar para Excel</button></div>
+  <div class="idx"><p><b>Como ler:</b> cada linha é uma unidade e cada coluna é um mês. <span class="c-ok">✓</span> pago · <span class="c-part">valor laranja</span> pagou só uma parte · <span class="c-late">✗</span> não pagou · <span class="c-open">a pagar</span> ainda não venceu · <span class="c-na">vago</span> sem inquilino. A última coluna é o saldo devedor de hoje. Toque numa linha para abrir o inquilino.</p></div>
+  <section class="group"><div class="ghead"><h2>Resumo de ${yr}</h2><span class="tot num">${brl2(anoRec)} de ${brl2(anoPrev)}</span></div>
+  <div class="tblwrap"><table class="pl"><thead><tr><th class="st">Mês</th><th>Previsto</th><th>Recebido</th><th>Faltou</th><th>%</th></tr></thead><tbody>${resumo||`<tr><td class="st" colspan="5">Nenhum mês deste ano ainda.</td></tr>`}</tbody></table></div></section>
+  <section class="group"><div class="ghead"><h2>Mês a mês por unidade</h2></div>
+  <div class="tblwrap"><table class="pl"><thead><tr><th class="st">Inquilino</th><th>Aluguel</th>${MES3.map(n=>`<th>${n}</th>`).join("")}<th>Saldo devedor</th></tr></thead><tbody>${body}</tbody>${foot}</table></div></section>`;
+}
+function exportCSV(){
+  const yr=state.pYear||state.y, ms=MES3.map((n,i)=>ymOf(yr,i));
+  const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"', num=v=>Number(v||0).toFixed(2).replace(".",",");
+  const rows=[["Endereço","Unidade","Inquilino","Vencimento","Aluguel",...MESES,"Saldo devedor"]];
+  predios().forEach(p=>state.tenants.filter(t=>t.predio===p).sort(unitCmp).forEach(t=>{
+    rows.push([p,t.unidade,t.ativo===false?"Vaga ("+t.nome+")":t.nome,"dia "+t.dia,num(t.valor),...ms.map(s=>{const c=cellInfo(t,s);return c.c==="c-ok"?"pago":c.c==="c-part"?"parcial "+num(c.rec):c.c==="c-late"?"não pago":c.c==="c-open"?"a pagar":c.txt}),num(saldo(t))]);
+  }));
+  const csv="\ufeff"+rows.map(r=>r.map(q).join(";")).join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="alugueis-"+yr+".csv";document.body.appendChild(a);a.click();a.remove();
+}
+
 /* ---------- índice de imóveis ---------- */
 function computeIndex(){
   const months=Object.keys(state.pays).filter(s=>s<CUR()).sort();
   const res=state.tenants.map(t=>{
-    let obs=0,occ=0,vac=0,unpaid=0,ep=0,prevVac=false,first=null;
+    let obs=0,occ=0,vac=0,vacMk=0,vacInf=0,unpaid=0,first=null,last=null;
+    const periods=[]; let curP=null;
     months.forEach(s=>{
       const e=entry(t,s);
       const isVac=e&&e.obs&&/desoc|vago|saiu/i.test(e.obs);
       const noInfo=e&&e.obs&&!isVac;
       if(noInfo) return;
       if(first===null){ if(!e) return; first=s; }
-      obs++;
-      if(isVac){vac++; if(!prevVac) ep++; prevVac=true;}
-      else {occ++; prevVac=false; if(!isPaid(e)) unpaid++;}
+      obs++; last=s;
+      if(isVac){vac++; if(/sem registro/i.test(e.obs)) vacInf++; else vacMk++;
+        if(!curP){curP={de:s,ate:s,n:0};periods.push(curP)} curP.ate=s; curP.n++;}
+      else {occ++; curP=null; if(!isPaid(e)) unpaid++;}
     });
-    if(t.ativo===false){ /* vaga hoje conta como mais um mês vago */ obs++;vac++; if(!prevVac) ep++; }
+    const vagaHoje=t.ativo===false;
     const occP=obs?occ/obs:0, payP=occ?(occ-unpaid)/occ:0;
-    const avgVac=ep?vac/ep:0;
     const score=Math.round(occP*100);
     const grade=score>=95?"alta":score>=85?"media":"baixa";
-    return {t,obs,occ,vac,unpaid,ep,occP,payP,avgVac,score,grade};
+    return {t,obs,occ,vac,vacMk,vacInf,unpaid,ep:periods.length,periods,first,last,vagaHoje,occP,payP,score,grade};
   }).filter(r=>r.obs>0);
   return {months,res};
 }
@@ -568,20 +673,27 @@ function viewIdx(){
   const {months,res}=computeIndex();
   if(!res.length) return `<button class="back" data-act="idxback">‹ Voltar</button><div class="empty">Ainda não há meses suficientes para calcular o índice.</div>`;
   const first=months.find(s=>res.some(r=>entry(r.t,s)))||months[0], last=months[months.length-1];
+  const missing=[];for(let m=first;m<=last;m=ymAdd(m,1)){if(!state.pays[m])missing.push(m)}
   const gName={alta:"Liquidez alta",media:"Liquidez média",baixa:"Liquidez baixa"};
   const gColor={alta:"var(--paid)",media:"var(--warm)",baixa:"var(--late)"};
-  const row=r=>`<div class="idxrow"><b>${esc(r.t.unidade||"—")} · ${esc(r.t.predio)}</b><span class="grade g-${r.grade}">${r.score}%</span>
+  const per=p=>p.de===p.ate?ymLabel(p.de):ymLabel(p.de)+" a "+ymLabel(p.ate);
+  const row=r=>`<div class="idxrow"><b>${esc(r.t.unidade||"—")} · ${esc(r.t.predio)}</b><span class="grade g-${r.grade}">${r.score}% alugado</span>
     <div class="meter"><i style="width:${r.score}%;background:${gColor[r.grade]}"></i></div>
-    <em>${r.vac?`Ficou vago ${r.vac} ${r.vac>1?"meses":"mês"} em ${r.ep} ${r.ep>1?"vezes":"vez"} (média de ${r.avgVac.toFixed(1).replace(".",",")} meses cada)`:"Nunca ficou vago no período"} · pagou ${Math.round(r.payP*100)}% dos meses alugados</em></div>`;
+    <em><b style="color:var(--fg)">${r.obs} meses com dados</b> (${ymLabel(r.first)} a ${ymLabel(r.last)}): alugado ${r.occ} · <b style="color:${r.vac?"var(--late)":"var(--fg)"}">vago ${r.vac}</b>${r.vagaHoje?" · está vago hoje":""}</em>
+    ${r.vac?`<em>Ficou vago em ${r.ep} ${r.ep>1?"períodos diferentes":"período"}: ${r.periods.map(p=>`${per(p)} (${p.n} ${p.n>1?"meses":"mês"})`).join("; ")}.${r.vacInf?` Desses, ${r.vacInf} ${r.vacInf>1?"meses estavam":"mês estava"} em branco na planilha antiga (provável vago).`:""}</em>`:""}
+    <em>Pagou ${Math.round(r.payP*100)}% dos meses em que esteve alugado.</em></div>`;
   /* por endereço */
   const byP={};res.forEach(r=>{(byP[r.t.predio]=byP[r.t.predio]||[]).push(r)});
-  const pRows=Object.entries(byP).map(([p,a])=>{const o=a.reduce((x,r)=>x+r.occ,0),b=a.reduce((x,r)=>x+r.obs,0),v=a.reduce((x,r)=>x+r.vac,0);return {p,score:Math.round(b?o/b*100:0),v,n:a.length}}).sort((a,b)=>b.score-a.score);
+  const pRows=Object.entries(byP).map(([p,a])=>{const o=a.reduce((x,r)=>x+r.occ,0),b=a.reduce((x,r)=>x+r.obs,0),v=a.reduce((x,r)=>x+r.vac,0);return {p,score:Math.round(b?o/b*100:0),v,b,n:a.length}}).sort((a,b)=>b.score-a.score);
   const worst=[...res].filter(r=>r.vac>0).sort((a,b)=>b.vac-a.vac||a.score-b.score);
   const best=[...res].sort((a,b)=>b.score-a.score||b.payP-a.payP);
   return `<button class="back" data-act="idxback">‹ Voltar</button>
   <h2 class="pagetitle">Índice Imóveis</h2>
-  <div class="idx"><p>Mostra a facilidade de manter cada imóvel alugado, de ${ymLabel(first)} até ${ymLabel(last)}. A porcentagem é a parte do tempo em que a unidade ficou alugada. Acima de 95% é liquidez alta, entre 85% e 95% é média, abaixo de 85% é baixa. Meses sem nenhum registro na planilha antiga, por 2 meses ou mais seguidos, contam como vagos.</p></div>
-  <section class="group"><div class="ghead"><h2>Por endereço</h2></div><div class="idx">${pRows.map(r=>`<div class="idxrow"><b>${esc(r.p)}</b><span class="grade g-${r.score>=95?"alta":r.score>=85?"media":"baixa"}">${r.score}%</span><div class="meter"><i style="width:${r.score}%;background:${gColor[r.score>=95?"alta":r.score>=85?"media":"baixa"]}"></i></div><em>${r.n} ${r.n===1?"unidade":"unidades"} · ${r.v} ${r.v===1?"mês vago":"meses vagos"} somando todas</em></div>`).join("")}</div></section>
+  <div class="idx"><p><b style="color:var(--fg)">O que é:</b> mostra o quanto cada imóvel fica alugado. Temos dados de <b style="color:var(--fg)">${ymLabel(first)} a ${ymLabel(last)}</b>: ${months.length} meses${missing.length?` (a planilha antiga não tinha ${missing.map(ymLabel).join(", ")})`:""}.</p>
+  <p><b style="color:var(--fg)">Como ler:</b> "34 meses com dados · alugado 14 · vago 20" quer dizer que, dos 34 meses que conhecemos daquela unidade, ela ficou 14 alugada e 20 vazia. A porcentagem é a parte do tempo alugada: acima de 95% é <span class="grade g-alta">alta</span>, de 85% a 95% <span class="grade g-media">média</span>, abaixo de 85% <span class="grade g-baixa">baixa</span>.</p>
+  <p><b style="color:var(--fg)">Períodos:</b> cada vez que o imóvel esvaziou e depois foi alugado de novo conta como um período vago. "2 períodos" = esvaziou duas vezes.</p>
+  <p><b style="color:var(--fg)">Atenção:</b> na planilha antiga, quando uma unidade ficava 2 meses ou mais sem nenhuma anotação, contamos como vaga. Se não era, toque no inquilino e corrija o mês.</p></div>
+  <section class="group"><div class="ghead"><h2>Por endereço</h2></div><div class="idx">${pRows.map(r=>`<div class="idxrow"><b>${esc(r.p)}</b><span class="grade g-${r.score>=95?"alta":r.score>=85?"media":"baixa"}">${r.score}%</span><div class="meter"><i style="width:${r.score}%;background:${gColor[r.score>=95?"alta":r.score>=85?"media":"baixa"]}"></i></div><em>${r.n} ${r.n===1?"unidade":"unidades"} · somando todas: ${r.b} meses com dados, ${r.v} ${r.v===1?"mês vago":"meses vagos"}</em></div>`).join("")}</div></section>
   <section class="group"><div class="ghead"><h2>Ficaram mais tempo desocupados</h2><span class="tot">${worst.length}</span></div><div class="idx">${worst.length?worst.slice(0,12).map(row).join(""):"<p>Nenhum imóvel ficou vago no período.</p>"}</div></section>
   ${state.idxAll?`<section class="group"><div class="ghead"><h2>Todos os imóveis, do mais líquido ao menos</h2></div><div class="idx">${best.map(row).join("")}</div></section>`:`<button class="btn ghost" data-act="idxall">Ver todos os ${best.length} imóveis</button>`}`;
 }
@@ -599,19 +711,27 @@ const errToast=()=>toast("Não salvou. Confira a internet e tente de novo.");
 
 /* operações de dados (usadas pelos botões e pela Selma) */
 const ops={
-  async pay(id,ymS,forma="Pix"){const t=findT(id);if(!t)throw new Error("Inquilino não encontrado");
-    await state.db.collection("pagamentos").doc(ymS).set({[id]:{forma,valor:Number(t.valor||0),em:new Date().toISOString()}},{merge:true});},
-  async clear(id,ymS){await state.db.collection("pagamentos").doc(ymS).set({[id]:null},{merge:true});},
-  async noCharge(id,ymS,motivo){await state.db.collection("pagamentos").doc(ymS).set({[id]:{obs:motivo||"Sem cobrança"}},{merge:true});},
+  async put(id,ymS,obj){const full={forma:null,valor:null,devido:null,parcial:null,obs:null,nao:null,hist:null,em:null};
+    await state.db.collection("pagamentos").doc(ymS).set({[id]:obj?Object.assign(full,obj):null},{merge:true});},
+  /* amount vazio = pagou tudo; amount = valor recebido agora (soma com o que já pagou no mês) */
+  async pay(id,ymS,forma="Pix",amount){const t=findT(id);if(!t)throw new Error("Inquilino não encontrado");
+    const prev=entry(t,ymS), due=Number((prev&&prev.devido)||t.valor||0);
+    const ja=isPaid(prev)&&prev.devido!=null?Number(prev.valor||0):0;
+    const got=amount==null?due:ja+Number(amount);
+    const em=new Date().toISOString();
+    if(got>=due-0.009) await ops.put(id,ymS,{forma,valor:due,em});
+    else await ops.put(id,ymS,{forma,valor:Math.round(got*100)/100,devido:due,parcial:true,em});},
+  async clear(id,ymS){await ops.put(id,ymS,null);},
+  async noCharge(id,ymS,motivo){await ops.put(id,ymS,{obs:motivo||"Sem cobrança"});},
   async edit(id,fields){const ok={};["nome","predio","unidade","dia","valor","ativo","desde"].forEach(k=>{if(fields[k]!==undefined&&fields[k]!==null)ok[k]=fields[k]});
     if(ok.dia!==undefined)ok.dia=Math.max(1,Math.min(31,parseInt(ok.dia,10)||1));
     if(ok.valor!==undefined)ok.valor=Number(ok.valor)||0;
     await state.db.collection("inquilinos").doc(id).update(ok);},
   async vacate(id){await state.db.collection("inquilinos").doc(id).update({ativo:false});
-    await state.db.collection("pagamentos").doc(CUR()).set({[id]:{obs:"Desocupado"}},{merge:true});},
+    await ops.put(id,CUR(),{obs:"Desocupado"});},
   async rent(id,f){const body={ativo:true,desde:CUR(),nome:f.nome||"Sem nome"};if(f.dia)body.dia=Math.max(1,Math.min(31,parseInt(f.dia,10)||1));if(f.valor!==undefined&&f.valor!=="")body.valor=Number(f.valor)||0;
     await state.db.collection("inquilinos").doc(id).update(body);
-    await state.db.collection("pagamentos").doc(CUR()).set({[id]:null},{merge:true});},
+    await ops.put(id,CUR(),null);},
   async add(f){const body={nome:f.nome||"Sem nome",predio:f.predio,unidade:f.unidade||"",dia:Math.max(1,Math.min(31,parseInt(f.dia,10)||10)),valor:Number(f.valor)||0,ativo:f.ativo!==false,desde:CUR()};
     const ref=await state.db.collection("inquilinos").add(body);return ref.id;},
   async renameEnd(oldP,newP){const b=state.db.batch();state.tenants.filter(t=>t.predio===oldP).forEach(t=>b.update(state.db.collection("inquilinos").doc(t.id),{predio:newP}));await b.commit();}
@@ -621,7 +741,7 @@ const findT=id=>state.tenants.find(x=>x.id===id);
 function openTenant(id,yearSel){
   const t=findT(id); if(!t) return;
   const year=yearSel||state.y;
-  const s=status(t), late=lateList(t), mes=MESES[state.m];
+  const s=status(t), dl=debtList(t), late=dl.map(d=>d.ym), sd=dl.reduce((a,d)=>a+d.falta,0), mes=MESES[state.m];
   let main="";
   if(t.ativo===false){
     main=`<div class="note">Unidade desocupada. Último inquilino: <b>${esc(t.nome||"—")}</b></div><button class="btn pay" data-act="rent">Alugar para novo inquilino</button>`;
@@ -630,16 +750,21 @@ function openTenant(id,yearSel){
   }else if(s.k==="na"){
     main=`<div class="note">${mes}: ${esc(s.e?s.e.obs:"sem cobrança")}</div>${s.e?`<button class="btn ghost" data-act="unpay">Cobrar normalmente em ${mes}</button>`:""}`;
   }else{
-    main=`<div><div class="note" style="margin-bottom:8px">Como pagou?</div>
+    const falta=s.part?s.falta:Number(t.valor||0);
+    main=`${s.part?`<div class="note">${mes}: já pagou ${brl2(s.pago)}. Falta ${brl2(s.falta)}.</div>`:""}
+      <div><div class="note" style="margin-bottom:8px">Como pagou?</div>
       <div class="opts"><button aria-pressed="true" data-f="Pix">Pix</button><button aria-pressed="false" data-f="Dinheiro">Dinheiro</button><button aria-pressed="false" data-f="Boleto">Boleto</button></div></div>
-      <button class="btn pay" data-act="pay">Recebi o aluguel de ${mes}</button>`;
+      <button class="btn pay" data-act="pay">Recebi tudo de ${mes} (${brl(falta)})</button>
+      <button class="btn ghost" data-act="part" data-m="${ym()}">Recebi só uma parte</button>
+      ${s.part?`<button class="btn ghost" data-act="unpay">Desfazer pagamento de ${mes}</button>`:""}`;
   }
-  const lateBox=late.length&&t.ativo!==false?`<div class="box"><h4>${late.length} parcela${late.length>1?"s":""} em atraso · ${brl(late.length*Number(t.valor||0))}</h4>
-    ${late.map(m=>`<div class="ln"><span>${ymLabel(m)} · ${brl(t.valor)}</span><button data-paym="${m}">Recebi</button></div>`).join("")}</div>`:"";
+  const lateBox=dl.length&&t.ativo!==false?`<div class="box"><h4>Saldo devedor: ${brl2(sd)}</h4>
+    ${dl.map(d=>`<div class="ln"><span>${ymLabel(d.ym)} · falta ${brl(d.falta)}${d.parcial?`<br><small style="color:var(--muted)">pagou ${brl(d.pago)}</small>`:""}</span><span class="bt"><button data-paym="${d.ym}">Recebi</button><button class="part" data-act="part" data-m="${d.ym}">Parte</button></span></div>`).join("")}</div>`:"";
   const cells=MES3.map((n,i)=>{
     const s2=ymOf(year,i), e=entry(t,s2);
     let c="m-none",lbl="—";
-    if(isPaid(e)){c="m-paid";lbl=e.parcial?"parcial":"pago"}
+    if(isPaid(e)&&remainder(e)>0.009){c="m-part";lbl="parcial"}
+    else if(isPaid(e)){c="m-paid";lbl="pago"}
     else if(isNA(e)){c="m-na";lbl=/desoc|vago|saiu/i.test(e.obs)?"vago":"s/ cob."}
     else if(s2>CUR()){c="m-none";lbl=""}
     else if(late.includes(s2)){c="m-late";lbl="atraso"}
@@ -648,12 +773,12 @@ function openTenant(id,yearSel){
     return `<button class="${c}" data-cell="${s2}"><span>${n}</span><i>${lbl}</i></button>`;
   }).join("");
   const sh=openSheet(`<h3>${esc(t.nome||"Sem nome")}</h3><div class="sub">${esc(t.unidade)} · ${esc(t.predio)}</div>
-    <div class="kv"><div><small>Vence</small><b class="num">Dia ${pad(dueDay(t))}</b></div><div><small>Valor</small><b class="num">${brl2(t.valor)}</b></div><div><small>${MES3[state.m]}</small><b>${esc(t.ativo===false?"Vaga":{paid:"Pago",open:"A pagar",late:"Atrasado",na:"Sem cobr."}[s.k])}</b></div></div>
+    <div class="kv"><div><small>Vence</small><b class="num">Dia ${pad(dueDay(t))}</b></div><div><small>Valor</small><b class="num">${brl2(t.valor)}</b></div><div><small>${MES3[state.m]}</small><b>${esc(t.ativo===false?"Vaga":s.part?"Parcial":{paid:"Pago",open:"A pagar",late:"Atrasado",na:"Sem cobr."}[s.k])}</b></div></div>
     ${lateBox}
     ${main}
     <div class="hist"><h4>Histórico de ${year}<span><button data-yr="${year-1}" aria-label="Ano anterior">‹</button><button data-yr="${year+1}" aria-label="Próximo ano">›</button></span></h4>
       <div class="months">${cells}</div>
-      <div class="legend"><span><b style="background:var(--paid)"></b>pago</span><span><b style="background:var(--late)"></b>atrasado</span><span><b style="background:var(--cold)"></b>a pagar</span><span><b style="background:var(--gray)"></b>vago / sem cobrança</span></div>
+      <div class="legend"><span><b style="background:var(--paid)"></b>pago</span><span><b style="background:var(--hot)"></b>parcial</span><span><b style="background:var(--late)"></b>atrasado</span><span><b style="background:var(--cold)"></b>a pagar</span><span><b style="background:var(--gray)"></b>vago / sem cobrança</span></div>
       <div class="note" style="margin-top:6px">Toque num mês para mudar.</div></div>
     <button class="btn ghost" data-act="edit">Editar dados</button>
     ${t.ativo===false?"":`<button class="btn danger" data-act="vacate">O inquilino saiu (deixar vaga)</button>`}
@@ -670,8 +795,9 @@ function openTenant(id,yearSel){
     const act=a.dataset.act;
     if(act==="close") closeSheet();
     if(act==="edit") openForm(t);
+    if(act==="part"){openPart(t,a.dataset.m,forma,year);return}
     if(act==="rent") openRent(t);
-    if(act==="pay"){a.disabled=true;try{await ops.pay(id,ym(),forma);closeSheet();toast(t.nome+" · pago em "+mes)}catch(x){a.disabled=false;errToast()}}
+    if(act==="pay"){a.disabled=true;try{await ops.pay(id,ym(),forma);closeSheet();toast(t.nome+" · "+mes+" quitado")}catch(x){a.disabled=false;errToast()}}
     if(act==="unpay"){try{await ops.clear(id,ym());closeSheet();toast("Pronto")}catch(x){errToast()}}
     if(act==="vacate"){
       if(!a.dataset.armed){a.dataset.armed="1";a.textContent="Toque de novo para confirmar";return}
@@ -679,9 +805,25 @@ function openTenant(id,yearSel){
     }
   });
 }
+function openPart(t,m,forma,year){
+  const e=entry(t,m), due=Number((e&&e.devido)||t.valor||0), ja=isPaid(e)&&e.devido!=null?Number(e.valor||0):0;
+  const sh=openSheet(`<h3>Pagamento parcial</h3><div class="sub">${esc(t.nome)} · ${MESES[ymParts(m).m]} de ${ymParts(m).y}</div>
+    <div class="partbox"><div class="note" style="text-align:left">Aluguel: <b>${brl2(due)}</b>${ja?` · já pagou <b>${brl2(ja)}</b>`:""} · falta <b>${brl2(due-ja)}</b></div>
+    <form id="pf"><label class="f">Quanto recebeu agora (R$)<input id="p-v" type="number" min="0.01" step="0.01" inputmode="decimal" required></label>
+    <div class="note" id="p-rest" style="text-align:left"></div>
+    <button class="btn pay" type="submit">Salvar pagamento</button></form></div>
+    <button class="btn ghost" id="p-back">Voltar</button>`);
+  const inp=$("p-v");
+  inp.addEventListener("input",()=>{const v=Number(inp.value)||0;const r=due-ja-v;$("p-rest").innerHTML=v?(r>0.009?`Vai ficar devendo <b style="color:var(--late)">${brl2(r)}</b> deste mês.`:`Com isso o mês fica <b style="color:var(--paid)">quitado</b>.`):""});
+  setTimeout(()=>inp.focus(),50);
+  $("p-back").onclick=()=>openTenant(t.id,year);
+  $("pf").addEventListener("submit",async e2=>{e2.preventDefault();const v=Number(inp.value)||0;if(v<=0)return;
+    try{await ops.pay(t.id,m,forma||"Pix",v);toast("Pagamento salvo");openTenant(t.id,year)}catch(x){errToast()}});
+}
 function cellMenu(t,s2,year){
   const sh=openSheet(`<h3>${MESES[ymParts(s2).m]} de ${ymParts(s2).y}</h3><div class="sub">${esc(t.nome)} · ${esc(t.unidade)}</div>
-    <button class="btn pay" data-c="pay">Pago</button>
+    <button class="btn pay" data-c="pay">Pago (tudo)</button>
+    <button class="btn ghost" data-c="part">Pagou só uma parte</button>
     <button class="btn danger" data-c="clear">Não pago</button>
     <button class="btn ghost" data-c="vago">Estava vago</button>
     <button class="btn ghost" data-c="nc">Sem cobrança (combinado)</button>
@@ -690,6 +832,7 @@ function cellMenu(t,s2,year){
     const b=e.target.closest("[data-c]"); if(!b) return;
     const c=b.dataset.c;
     if(c==="back"){openTenant(t.id,year);return}
+    if(c==="part"){openPart(t,s2,"Pix",year);return}
     try{
       if(c==="pay") await ops.pay(t.id,s2,"Pix");
       if(c==="clear") await ops.clear(t.id,s2);
@@ -818,12 +961,12 @@ async function importBackup(e){
 /* ---------- Selma ---------- */
 const chat={open:false,msgs:[],api:[],busy:false};
 function quickAnswers(){
-  const cur=CUR(), lateT=active().map(t=>({t,l:lateList(t)})).filter(x=>x.l.length).sort((a,b)=>b.l.length-a.l.length);
+  const cur=CUR(), lateT=active().map(t=>({t,l:debtList(t)})).filter(x=>x.l.length).map(x=>Object.assign(x,{sd:x.l.reduce((a,d)=>a+d.falta,0)})).sort((a,b)=>b.sd-a.sd);
   const today=now.getDate();
   return {
-    "Quem está atrasado?":()=>lateT.length?"Estão com aluguel atrasado:\n"+lateT.map(x=>`• ${x.t.nome} (${x.t.unidade}, ${x.t.predio}): ${x.l.length} parcela${x.l.length>1?"s":""} – ${x.l.map(ymLabel).join(", ")}`).join("\n")+`\n\nTotal: ${brl(lateT.reduce((a,x)=>a+x.l.length*Number(x.t.valor||0),0))}.`:"Ninguém está atrasado. Tudo em dia!",
-    "Quanto falta receber este mês?":()=>{const a=active();let tot=0,pg=0;a.forEach(t=>{const e=entry(t,cur);if(isNA(e))return;tot+=Number(t.valor||0);if(isPaid(e))pg+=Number(t.valor||0)});return `Em ${MESES[now.getMonth()]} o total é ${brl2(tot)}. Já entrou ${brl2(pg)} e falta ${brl2(tot-pg)}.`},
-    "Quem vence esta semana?":()=>{const l=active().filter(t=>{const e=entry(t,cur);if(isPaid(e)||isNA(e))return false;const d=dueDayIn(t,now.getFullYear(),now.getMonth());return d>=today&&d<=today+7}).sort((a,b)=>a.dia-b.dia);return l.length?"Vencem nos próximos 7 dias:\n"+l.map(t=>`• Dia ${pad(t.dia)} – ${t.nome} (${t.unidade}, ${t.predio}) – ${brl(t.valor)}`).join("\n"):"Ninguém vence nos próximos 7 dias."},
+    "Quem está atrasado?":()=>lateT.length?"Têm saldo devedor:\n"+lateT.map(x=>`• ${x.t.nome} (${x.t.unidade}, ${x.t.predio}): deve ${brl(x.sd)} – ${x.l.map(d=>ymLabel(d.ym)+(d.parcial?" (parte)":"")).join(", ")}`).join("\n")+`\n\nTotal devido: ${brl(lateT.reduce((a,x)=>a+x.sd,0))}.`:"Ninguém está devendo. Tudo em dia!",
+    "Quanto falta receber este mês?":()=>{const a=active();let tot=0,pg=0;a.forEach(t=>{const e=entry(t,cur);if(isNA(e))return;tot+=Number((e&&e.devido)||t.valor||0);pg+=paidAmt(e,t)});return `Em ${MESES[now.getMonth()]} o total é ${brl2(tot)}. Já entrou ${brl2(pg)} e falta ${brl2(tot-pg)}.`},
+    "Quem vence esta semana?":()=>{const l=active().filter(t=>{const e=entry(t,cur);if((isPaid(e)&&!(remainder(e)>0.009))||isNA(e))return false;const d=dueDayIn(t,now.getFullYear(),now.getMonth());return d>=today&&d<=today+7}).sort((a,b)=>a.dia-b.dia);return l.length?"Vencem nos próximos 7 dias:\n"+l.map(t=>`• Dia ${pad(t.dia)} – ${t.nome} (${t.unidade}, ${t.predio}) – ${brl(t.valor)}`).join("\n"):"Ninguém vence nos próximos 7 dias."},
     "Quais imóveis estão vagos?":()=>{const v=state.tenants.filter(t=>t.ativo===false);return v.length?"Unidades vagas agora:\n"+v.map(t=>`• ${t.unidade} – ${t.predio} (${brl(t.valor)})`).join("\n"):"Nenhuma unidade vaga. Tudo alugado!"},
     "Como marco um pagamento?":()=>"É fácil:\n1. Toque no nome do inquilino.\n2. Escolha como pagou (Pix, Dinheiro ou Boleto).\n3. Toque no botão verde \"Recebi o aluguel\".\n\nSe ele tinha meses atrasados, aparece uma caixa vermelha com cada mês e um botão \"Recebi\" do lado."
   };
@@ -847,12 +990,12 @@ function renderChat(){
 }
 function snapshotForAI(){
   const cur=CUR();
-  const lines=state.tenants.map(t=>{const s=t.ativo===false?"VAGA":(()=>{const e=entry(t,cur);return isPaid(e)?"pago":isNA(e)?e.obs:"não pago"})();
-    const l=lateList(t);return `${t.id} | ${t.nome} | ${t.predio} | ${t.unidade} | dia ${t.dia} | ${brl2(t.valor)} | ${t.ativo===false?"vaga":"alugada"} | ${MES3[now.getMonth()]}: ${s}${l.length?` | ATRASOS: ${l.join(",")}`:""}`});
+  const lines=state.tenants.map(t=>{const s=t.ativo===false?"VAGA":(()=>{const e=entry(t,cur);return isPaid(e)?(remainder(e)>0.009?"pagou parte "+brl2(e.valor):"pago"):isNA(e)?e.obs:"não pago"})();
+    const l=debtList(t);return `${t.id} | ${t.nome} | ${t.predio} | ${t.unidade} | dia ${t.dia} | ${brl2(t.valor)} | ${t.ativo===false?"vaga":"alugada"} | ${MES3[now.getMonth()]}: ${s}${l.length?` | SALDO DEVEDOR ${brl2(l.reduce((a,d)=>a+d.falta,0))}: ${l.map(d=>d.ym+" falta "+brl2(d.falta)).join(", ")}`:""}`});
   return lines.join("\n");
 }
 const TOOLS=[
- {name:"marcar_pagamento",description:"Marca que o inquilino pagou o aluguel de um mês.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string",description:"AAAA-MM"},forma:{type:"string",enum:["Pix","Dinheiro","Boleto","Outro"]}},required:["inquilino_id","mes"]}},
+ {name:"marcar_pagamento",description:"Registra pagamento de um mês. Sem 'valor' = pagou tudo que faltava. Com 'valor' = pagamento parcial desse valor (soma com o que já tinha pago no mês; o resto vira saldo devedor).",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string",description:"AAAA-MM"},forma:{type:"string",enum:["Pix","Dinheiro","Boleto","Outro"]},valor:{type:"number",description:"valor recebido agora, só se for parcial"}},required:["inquilino_id","mes"]}},
  {name:"desfazer_pagamento",description:"Volta um mês para 'não pago' (remove pagamento ou observação).",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string"}},required:["inquilino_id","mes"]}},
  {name:"marcar_sem_cobranca",description:"Marca um mês como sem cobrança (ex.: vago, acordo, calção).",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},mes:{type:"string"},motivo:{type:"string"}},required:["inquilino_id","mes","motivo"]}},
  {name:"editar_inquilino",description:"Altera dados de uma unidade/inquilino: nome, dia de vencimento, valor, unidade ou endereço.",input_schema:{type:"object",properties:{inquilino_id:{type:"string"},nome:{type:"string"},dia:{type:"integer"},valor:{type:"number"},unidade:{type:"string"},predio:{type:"string"}},required:["inquilino_id"]}},
@@ -866,14 +1009,14 @@ async function runTool(name,inp){
   const t=inp.inquilino_id?findT(inp.inquilino_id):null;
   if(inp.inquilino_id&&!t) return "Erro: inquilino_id não existe.";
   switch(name){
-    case "marcar_pagamento": await ops.pay(t.id,inp.mes,inp.forma||"Pix"); return `Ok: ${t.nome} ${inp.mes} pago.`;
+    case "marcar_pagamento": await ops.pay(t.id,inp.mes,inp.forma||"Pix",inp.valor==null?undefined:Number(inp.valor)); {const e=entry(t,inp.mes);return remainder(e)>0.009?`Ok: ${t.nome} ${inp.mes} pagou parte; falta ${brl2(remainder(e))}.`:`Ok: ${t.nome} ${inp.mes} pago.`}
     case "desfazer_pagamento": await ops.clear(t.id,inp.mes); return `Ok: ${t.nome} ${inp.mes} voltou para não pago.`;
     case "marcar_sem_cobranca": await ops.noCharge(t.id,inp.mes,inp.motivo); return `Ok.`;
     case "editar_inquilino": {const f=Object.assign({},inp);delete f.inquilino_id;await ops.edit(t.id,f);return "Ok: dados alterados.";}
     case "desocupar_unidade": await ops.vacate(t.id); return "Ok: unidade vaga.";
     case "alugar_unidade": await ops.rent(t.id,inp); return "Ok: unidade alugada.";
     case "adicionar_unidade": {const id=await ops.add(inp);return "Ok: criada com id "+id;}
-    case "ver_historico": return Object.keys(state.pays).sort().map(s=>{const e=entry(t,s);return s+": "+(isPaid(e)?"pago":isNA(e)?e.obs:(s<startOf(t)?"(antes do controle)":"não pago"))}).join("\n");
+    case "ver_historico": return Object.keys(state.pays).sort().map(s=>{const e=entry(t,s);return s+": "+(isPaid(e)?(remainder(e)>0.009?"parcial, falta "+brl2(remainder(e)):"pago"):isNA(e)?e.obs:(s<startOf(t)?"(antes do controle)":"não pago"))}).join("\n");
     case "indice_imoveis": return computeIndex().res.map(r=>`${r.t.unidade} ${r.t.predio}: ${r.score}% alugado, ${r.vac} meses vago em ${r.ep} vezes, pagou ${Math.round(r.payP*100)}%`).join("\n");
   }
   return "Ferramenta desconhecida.";
@@ -888,7 +1031,7 @@ async function sendSelma(text){
   }
   chat.api.push({role:"user",content:text});
   chat.busy=true;renderChat();
-  const sys=`Você é a Selma, assistente do app de controle de aluguéis de um senhor de mais idade. Fale português do Brasil, com frases curtas, claras e gentis, sem termos técnicos. Hoje é ${now.toLocaleDateString("pt-BR")} (mês atual ${CUR()}). O app mostra o total a receber do mês, quem pagou, quem está a pagar e quem está atrasado; parcelas em atraso contam a partir de ${LATE_START}. Use as ferramentas para mudar dados. Para marcar pagamento quando o pedido for claro, faça direto. Antes de desocupar unidade, apagar ou mudar valor/endereço, confirme com a pessoa. Se houver mais de um inquilino com o mesmo nome, pergunte qual unidade. Depois de mudar algo, diga em uma frase o que foi feito.\n\nDados atuais (id | nome | endereço | unidade | vencimento | valor | situação | mês atual | atrasos):\n${snapshotForAI()}`;
+  const sys=`Você é a Selma, assistente do app de controle de aluguéis de um senhor de mais idade. Fale português do Brasil, com frases curtas, claras e gentis, sem termos técnicos. Hoje é ${now.toLocaleDateString("pt-BR")} (mês atual ${CUR()}). O app mostra o total a receber do mês, quem pagou, quem está a pagar e quem está atrasado. Saldo devedor = meses vencidos não pagos + o que faltou em pagamentos parciais, contando a partir de ${LATE_START}. Para pagamento parcial use marcar_pagamento com 'valor'. Use as ferramentas para mudar dados. Para marcar pagamento quando o pedido for claro, faça direto. Antes de desocupar unidade, apagar ou mudar valor/endereço, confirme com a pessoa. Se houver mais de um inquilino com o mesmo nome, pergunte qual unidade. Depois de mudar algo, diga em uma frase o que foi feito.\n\nDados atuais (id | nome | endereço | unidade | vencimento | valor | situação | mês atual | atrasos):\n${snapshotForAI()}`;
   try{
     for(let round=0;round<6;round++){
       const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
@@ -928,6 +1071,8 @@ L.addEventListener("click",e=>{
   if(a){const k=a.dataset.act;
     if(k==="endback"){state.endSel=null;render();return}
     if(k==="idxall"){state.idxAll=true;render();return}
+    if(k==="pyear"){state.pYear=(state.pYear||state.y)+Number(a.dataset.d);render();return}
+    if(k==="csv"){exportCSV();return}
     if(k==="idxback"){state.view=lsGet("al_view","prazo");if(state.view==="idx")state.view="prazo";render();return}
     if(k==="addunit"){openForm(null,a.dataset.predio);return}
     if(k==="renend"){openRename(a.dataset.predio);return}
@@ -935,7 +1080,8 @@ L.addEventListener("click",e=>{
   const inq=e.target.closest("[data-inq]"); if(inq){state.inqTab=inq.dataset.inq;render();return}
   const en=e.target.closest("[data-end]"); if(en){state.endSel=en.dataset.end;state.endTab="todas";render();window.scrollTo({top:document.querySelector(".menu").offsetTop-10,behavior:"smooth"});return}
   const et=e.target.closest("[data-endtab]"); if(et){state.endTab=et.dataset.endtab;render();return}
-  const c=e.target.closest(".card"); if(c) openTenant(c.dataset.id);
+  const c=e.target.closest(".card"); if(c){openTenant(c.dataset.id);return}
+  const cl=e.target.closest("td.cl"); if(cl) openTenant(cl.dataset.id,state.pYear||state.y);
 });
 L.addEventListener("input",e=>{if(e.target.id==="qInput"){state.q=e.target.value;const pos=e.target.selectionStart;render();const i=$("qInput");if(i){i.focus();try{i.setSelectionRange(pos,pos)}catch(x){}}}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeSheet();if(chat.open){chat.open=false;renderChat()}}});
